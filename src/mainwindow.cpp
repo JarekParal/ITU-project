@@ -1,11 +1,20 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QGridLayout>
+
 MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    QWidget(parent)//, ui(new Ui::MainWindow)
 {
-    ui->setupUi(this);
+    //ui->setupUi(this);
+
+    paintArea = new PaintArea;
+
+    QGridLayout *mainLayout = new QGridLayout;
+    mainLayout->setColumnStretch(0, 1);
+    mainLayout->setColumnStretch(3, 1);
+    mainLayout->addWidget(paintArea, 1, 0);
+    setLayout(mainLayout);
 
     color = QColor(Qt::black);
 }
@@ -37,14 +46,14 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
     this->update();
 }
 
-void MainWindow::paintEvent(QPaintEvent *event)
-{
-    Q_UNUSED(event);
-    QPainter painter(this);
-
-    painter.setPen(QColor(color));
-    painter.drawPolyline(points.data(), points.count());
-}
+//void MainWindow::paintEvent(QPaintEvent *event)
+//{
+//    Q_UNUSED(event);
+//    QPainter painter(this);
+//
+//    painter.setPen(QColor(color));
+//    painter.drawPolyline(points.data(), points.count());
+//}
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
