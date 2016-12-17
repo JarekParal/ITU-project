@@ -24,7 +24,7 @@ QSize PaintArea::minimumSizeHint() const
 
 QSize PaintArea::sizeHint() const
 {
-    return QSize(400, 200);
+    return QSize(800, 800);
 }
 
 void PaintArea::paintEvent(QPaintEvent * event)

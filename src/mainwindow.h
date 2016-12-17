@@ -9,6 +9,7 @@
 #include <QPushButton>
 #include <QMouseEvent>
 #include <QPainter>
+#include <QToolBar>
 
 #include "paintArea.h"
 
@@ -28,8 +29,23 @@ private:
     Ui::MainWindow *ui;
 
     PaintArea *paintArea;
-    QPushButton * loadButton;
-    QPushButton * saveButton;
+
+    QToolBar *upToolBar;
+    QPushButton *loadButton;
+    QPushButton *saveButton;
+    QPushButton *penButton;
+    QPushButton *brushButton;
+    QPushButton *textButton;
+    QPushButton *rubberButton;
+    QPushButton *dropperButton;
+    QPushButton *canButton;
+
+    QToolBar *leftToolBar;
+    QPushButton *lineSelBtn;
+    QPushButton *circleSelBtn;
+    QPushButton *rectSelBtn;
+    QPushButton *elipseSelBtn;
+    QPushButton *curveSelBtn;
 };
 
 #endif // MAINWINDOW_H
