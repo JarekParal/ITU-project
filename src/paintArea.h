@@ -47,8 +47,8 @@ protected:
 
 private:
     QPainter *painter;
-    QPainterPath painterPath;
     QPixmap pixmap;
+    QPixmap imageBeforeMouseMoveEvent;
     QPixmap *image;
 
     int paintActivate;

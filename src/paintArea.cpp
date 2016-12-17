@@ -116,7 +116,7 @@ void PaintArea::paintObject(PaintType type, int x1, int y1, int x2, int y2) {
             break;
 
         case PaintType::circle:
-            paint.drawEllipse(x1,y1,x2-x1,y2-y1);
+            paint.drawEllipse(x1,y1,x2-x1,y2-y1); //TODO
             qDebug() << "drawEllipse";
             break;
 
@@ -131,7 +131,7 @@ void PaintArea::paintObject(PaintType type, int x1, int y1, int x2, int y2) {
             break;
 
         case PaintType::curve:
-            paint.drawLine(x1,y1,x2,y2);
+            paint.drawLine(x1,y1,x2,y2); //TODO
             qDebug() << "drawLine";
             break;
 
@@ -150,6 +150,7 @@ void PaintArea::paintObject(PaintType type, int x1, int y1, int x2, int y2) {
 
 void PaintArea::mousePressEvent(QMouseEvent *event)
 {
+    imageBeforeMouseMoveEvent = image->copy();
     x = event->x();
     y = event->y();
 
@@ -159,13 +160,14 @@ void PaintArea::mousePressEvent(QMouseEvent *event)
 void PaintArea::mouseReleaseEvent(QMouseEvent *event)
 {
     paintObject(actualPaintType, x, y, event->x(), event->y());
-
     this->update();
 }
 
 void PaintArea::mouseMoveEvent(QMouseEvent *event)
 {
-    Q_UNUSED(event);
+    delete image;
+    image = new QPixmap(imageBeforeMouseMoveEvent);
+    paintObject(actualPaintType, x, y, event->x(), event->y());
     this->update();
 }
 
