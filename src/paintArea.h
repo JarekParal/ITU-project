@@ -28,8 +28,8 @@ public:
     QSize minimumSizeHint() const Q_DECL_OVERRIDE;
     QSize sizeHint() const Q_DECL_OVERRIDE;
 
-    enum class Type { line, rect, circle };
-    void paintObject(PaintArea::Type type, int x1, int y1, int x2, int y2);
+    enum class PaintType { line, rect, circle };
+    void paintObject(PaintType type, int x1, int y1, int x2, int y2);
 
 
 signals:
@@ -40,12 +40,16 @@ public slots:
 
 protected:
     void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
+    void mousePressEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
+    int x, y;
 
 private:
     QPainter *painter;
     QPainterPath painterPath;
     QPixmap pixmap;
-    QPixmap* image;
+    QPixmap *image;
 
     int paintActivate;
 };

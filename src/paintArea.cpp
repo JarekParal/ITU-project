@@ -3,26 +3,18 @@
 PaintArea::PaintArea(QWidget *parent) : QWidget(parent)
 {
     //To allow paint events outside of paintEvent
-    setAttribute(Qt::WA_StaticContents);
-
-//    painter = new QPainter(this);
-
-//    pixmap.load(":/images/qt-logo.png");
-//    painter->drawPixmap(0,0,pixmap);
+    //setAttribute(Qt::WA_StaticContents);
 
     image = new QPixmap(800, 800);
-    paintActivate = false;
+    image->fill(Qt::white);
 
     QPainter paint;
     paint.begin(image);
     paint.setPen(QColor(Qt::blue));
     paint.drawLine(0,0,100,100);
     paint.end();
+
     paintActivate = true;
-
-    qDebug() << "PaintArea constructor - end\n";
-
-    painterPath.addRect(10, 10, 120, 120);
 }
 
 QSize PaintArea::minimumSizeHint() const
@@ -37,8 +29,6 @@ QSize PaintArea::sizeHint() const
 
 void PaintArea::paintEvent(QPaintEvent * event)
 {
-    qDebug() << "PaintEvent\n";
-
     if(paintActivate == true) {
         QPainter painter(this);
         QRect rec = event->rect();
@@ -77,6 +67,9 @@ void PaintArea::loadFromFile()
                                  .arg(QDir::toNativeSeparators(fileName)));
         return;
     } else {
+        delete(image);
+        image = new QPixmap(pixmap);
+
         QMessageBox::information(this, QGuiApplication::applicationDisplayName(),
                                  tr("Picture successfully load."));
 
@@ -97,28 +90,10 @@ void PaintArea::saveToFile()
         return;
     }
 
-//    QFile file(fileName);
-//    if (file.open(QIODevice::WriteOnly) == false){
-//        QMessageBox::information(this, QGuiApplication::applicationDisplayName(),
-//                                 tr("Cannot open file for saving picture."));
-//        return;
-//    }
-
-    QImage picture;
-    QPainter painter;
-    painter.begin(&picture);
-    painter.drawPath(painterPath);
-    painter.end();
-
-    QImageWriter imagefile; // = QImageWriter();
-    imagefile.setFileName(fileName);
-    imagefile.setFormat("png");
-    imagefile.setQuality(100);
-
-    if (imagefile.write(picture) == false){
+    if (image->save(fileName) == false){
         QMessageBox::information(this, QGuiApplication::applicationDisplayName(),
-                                 tr("Cannot save picture %1: %2.")
-                                 .arg(QDir::toNativeSeparators(fileName), imagefile.errorString()));
+                                 tr("Cannot save picture %1:.")
+                                 .arg(QDir::toNativeSeparators(fileName)));
         return;
     } else {
         QMessageBox::information(this, QGuiApplication::applicationDisplayName(),
@@ -126,27 +101,20 @@ void PaintArea::saveToFile()
     }
 }
 
-void PaintArea::paintObject(PaintArea::Type type, int x1, int y1, int x2, int y2) {
+void PaintArea::paintObject(PaintArea::PaintType type, int x1, int y1, int x2, int y2) {
     QPainter paint;
 
     switch (type) {
-    case PaintArea::Type::line:
-        //painterPath.moveTo(x1, y1);
-        painterPath.lineTo(x2, y2);
-
+    case PaintArea::PaintType::line:
         paintActivate = false;
-
         paint.begin(image);
         paint.setPen(QColor(Qt::blue));
         paint.drawLine(x1,y1,x2,y2);
         paint.end();
         paintActivate = true;
 
-
         qDebug() << "x1: " << x1 << "  y1: " << y1 << "  x2: " << x2 << "  y2: " << y2 << "\n";
 
-//        QMessageBox::information(this, QGuiApplication::applicationDisplayName(),
-//                                 tr("Line -> painterPath"));
         break;
     default:
         break;
@@ -154,3 +122,30 @@ void PaintArea::paintObject(PaintArea::Type type, int x1, int y1, int x2, int y2
 
     this->update();
 }
+
+
+void PaintArea::mousePressEvent(QMouseEvent *event)
+{
+    x = event->x();
+    y = event->y();
+
+    this->update();
+}
+
+void PaintArea::mouseReleaseEvent(QMouseEvent *event)
+{
+    Q_UNUSED(event);
+
+    paintObject(PaintType::line, x, y, event->x(), event->y());
+
+    this->update();
+}
+
+void PaintArea::mouseMoveEvent(QMouseEvent *event)
+{
+    //points.append(event->pos());
+
+    this->update();
+}
+
+
