@@ -15,16 +15,20 @@ MainWindow::MainWindow(QWidget *parent) :
     mainLayout->setColumnStretch(3, 1);
     mainLayout->addWidget(paintArea, 1, 1);
 
+    leftToolBar = new QToolBar;
+    leftToolBar->setOrientation(Qt::Vertical);
+
     upToolBar = new QToolBar;
+
     loadButton = new QPushButton(tr("&Load"));
     loadButton->setToolTip(tr("Load picture from a file"));
-    upToolBar->addWidget(loadButton);
+    leftToolBar->addWidget(loadButton);
     connect(loadButton, SIGNAL(clicked()), paintArea, SLOT(
                 loadFromFile()));
 
     saveButton = new QPushButton(tr("&Save"));
     saveButton->setToolTip(tr("Save picture to a file"));
-    upToolBar->addWidget(saveButton);
+    leftToolBar->addWidget(saveButton);
     connect(saveButton, SIGNAL(clicked()), paintArea, SLOT(
                 saveToFile()));
 
@@ -32,48 +36,60 @@ MainWindow::MainWindow(QWidget *parent) :
     penButton->setCheckable(true);
     connect(penButton, SIGNAL(clicked()),
             this, SLOT(penSelBtnSlot()));
-    upToolBar->addWidget(penButton);
+    leftToolBar->addWidget(penButton);
     brushButton = new QPushButton(tr("&Brush"));
     brushButton->setCheckable(true);
     connect(brushButton, SIGNAL(clicked()),
             this, SLOT(brushSelBtnSlot()));
-    upToolBar->addWidget(brushButton);
+    leftToolBar->addWidget(brushButton);
     textButton = new QPushButton(tr("&Text"));
     textButton->setCheckable(true);
     connect(textButton, SIGNAL(clicked()),
             this, SLOT(textSelBtnSlot()));
-    upToolBar->addWidget(textButton);
+    leftToolBar->addWidget(textButton);
     rubberButton = new QPushButton(tr("&Rubber"));
     rubberButton->setCheckable(true);
     connect(rubberButton, SIGNAL(clicked()),
             this, SLOT(rubberSelBtnSlot()));
-    upToolBar->addWidget(rubberButton);
+    leftToolBar->addWidget(rubberButton);
     dropperButton = new QPushButton(tr("&Dropper"));
     dropperButton->setCheckable(true);
     connect(dropperButton, SIGNAL(clicked()),
             this, SLOT(dropperSelBtnSlot()));
-    upToolBar->addWidget(dropperButton);
+    leftToolBar->addWidget(dropperButton);
     canButton = new QPushButton(tr("&Can"));
     canButton->setCheckable(true);
     connect(canButton, SIGNAL(clicked()),
             this, SLOT(canSelBtnSlot()));
-    upToolBar->addWidget(canButton);
+    leftToolBar->addWidget(canButton);
 
     mainLayout->addWidget(upToolBar, 0, 0, 1, 3);
-
-    leftToolBar = new QToolBar;
-    leftToolBar->setOrientation(Qt::Vertical);
 
     lineSelBtn = new QPushButton(tr("&Line"));
     lineSelBtn->setCheckable(true);
     leftToolBar->addWidget(lineSelBtn);
-    connect(lineSelBtn, SIGNAL(clicked()),
-            this, SLOT(lineSelBtnSlot()));
+//    connect(lineSelBtn, SIGNAL(clicked()),
+//            this, SLOT(selectBtnSlot(PaintArea::PaintType::line)));
+
+
     circleSelBtn = new QPushButton(tr("&Circle"));
     circleSelBtn->setCheckable(true);
     leftToolBar->addWidget(circleSelBtn);
-    connect(circleSelBtn, SIGNAL(clicked()),
-            this, SLOT(circleSelBtnSlot()));
+//    connect(circleSelBtn, SIGNAL(clicked()),
+//            this, SLOT(circleSelBtnSlot()));
+
+    selectBtnSlotMapper = new QSignalMapper(this);
+    selectBtnSlotMapper->setMapping(lineSelBtn, 1);
+    selectBtnSlotMapper->setMapping(circleSelBtn, 2);
+
+    connect(lineSelBtn, &QPushButton::clicked,
+        selectBtnSlotMapper, &QSignalMapper::map);
+    connect(circleSelBtn, &QPushButton::clicked,
+        selectBtnSlotMapper, &QSignalMapper::map);
+
+    connect(selectBtnSlotMapper, SIGNAL(mapped(int)),
+           this, SLOT(selectBtnSlot(int)));
+
     rectSelBtn = new QPushButton(tr("&Rect"));
     rectSelBtn->setCheckable(true);
     leftToolBar->addWidget(rectSelBtn);
@@ -100,6 +116,18 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+
+void MainWindow::selectBtnSlot(int type)
+{
+    qDebug() << "selectBtnSlot: " << static_cast<int>(type);
+
+    if(type == static_cast<int>(PaintArea::PaintType::line))
+    {
+        lineSelBtn->setChecked(true);
+        paintArea->actualPaintType=PaintArea::PaintType::line;
+    }
+}
+
 void MainWindow::uncheckAllToolBar()
 {
     lineSelBtn->setChecked(false);
@@ -119,8 +147,6 @@ void MainWindow::uncheckAllToolBar()
 void MainWindow::lineSelBtnSlot()
 {
     uncheckAllToolBar();
-    lineSelBtn->setChecked(true);
-    paintArea->actualPaintType=paintArea->PaintType::line;
 
     qDebug() << "lineSelBtnSlot: " << static_cast<int>(paintArea->actualPaintType) << "\n";
 }

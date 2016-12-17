@@ -11,6 +11,8 @@
 #include <QPainter>
 #include <QToolBar>
 
+#include <QSignalMapper>
+
 #include "paintArea.h"
 
 namespace Ui {
@@ -31,6 +33,31 @@ private:
     PaintArea *paintArea;
 
     QToolBar *upToolBar;
+    QPushButton *setStyleBtn;
+    QPushButton *setBrushBtn;
+    QPushButton *setWidthBtn;
+    QPushButton *setColorBtn;
+    QPushButton *textBtn;
+
+    QToolBar * setWidthToolBar;
+    QPushButton *width_1_Btn;
+    QPushButton *width_2_Btn;
+    QPushButton *width_3_Btn;
+    QPushButton *width_4_Btn;
+    QPushButton *width_5_Btn;
+    QPushButton *width_6_Btn;
+    QPushButton *width_7_Btn;
+    QPushButton *width_8_Btn;
+
+    QToolBar * setStyleToolBar;
+    QPushButton *style_SolidLine_Btn;
+    QPushButton *style_DashLine_Btn;
+    QPushButton *style_DotLine_Btn;
+    QPushButton *style_DashDotLine_Btn;
+    QPushButton *style_DashDotDotLine_Btn;
+    QPushButton *style_CustomDashLine_Btn;
+
+    QToolBar *leftToolBar;
     QPushButton *loadButton;
     QPushButton *saveButton;
     QPushButton *penButton;
@@ -40,12 +67,13 @@ private:
     QPushButton *dropperButton;
     QPushButton *canButton;
 
-    QToolBar *leftToolBar;
     QPushButton *lineSelBtn;
     QPushButton *circleSelBtn;
     QPushButton *rectSelBtn;
     QPushButton *ellipseSelBtn;
     QPushButton *curveSelBtn;
+
+    QSignalMapper *selectBtnSlotMapper;
 
     void uncheckAllToolBar();
 
@@ -62,6 +90,8 @@ public slots:
     void rubberSelBtnSlot();
     void dropperSelBtnSlot();
     void canSelBtnSlot();
+
+    void selectBtnSlot(int type);
 };
 
 #endif // MAINWINDOW_H
