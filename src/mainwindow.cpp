@@ -68,28 +68,14 @@ MainWindow::MainWindow(QWidget *parent) :
     lineSelBtn = new QPushButton(tr("&Line"));
     lineSelBtn->setCheckable(true);
     leftToolBar->addWidget(lineSelBtn);
-//    connect(lineSelBtn, SIGNAL(clicked()),
-//            this, SLOT(selectBtnSlot(PaintArea::PaintType::line)));
-
+    connect(lineSelBtn, SIGNAL(clicked()),
+            this, SLOT(selectBtnSlot(PaintArea::PaintType::line)));
 
     circleSelBtn = new QPushButton(tr("&Circle"));
     circleSelBtn->setCheckable(true);
     leftToolBar->addWidget(circleSelBtn);
-//    connect(circleSelBtn, SIGNAL(clicked()),
-//            this, SLOT(circleSelBtnSlot()));
-
-    selectBtnSlotMapper = new QSignalMapper(this);
-    selectBtnSlotMapper->setMapping(lineSelBtn, PaintArea::PaintType::line);
-    selectBtnSlotMapper->setMapping(circleSelBtn, PaintArea::PaintType::circle);
-
-    connect(lineSelBtn, &QPushButton::clicked,
-        selectBtnSlotMapper, &QSignalMapper::map);
-    connect(circleSelBtn, &QPushButton::clicked,
-        selectBtnSlotMapper, &QSignalMapper::map);
-
-    connect(selectBtnSlotMapper, SIGNAL(mapped(PaintArea::PaintType)),
-           this, SLOT(selectBtnSlot(PaintArea::PaintType)));
-
+    connect(circleSelBtn, SIGNAL(clicked()),
+            this, SLOT(circleSelBtnSlot()));
     rectSelBtn = new QPushButton(tr("&Rect"));
     rectSelBtn->setCheckable(true);
     leftToolBar->addWidget(rectSelBtn);

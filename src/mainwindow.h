@@ -11,8 +11,6 @@
 #include <QPainter>
 #include <QToolBar>
 
-#include <QSignalMapper>
-
 #include "paintArea.h"
 
 namespace Ui {
@@ -72,8 +70,6 @@ private:
     QPushButton *rectSelBtn;
     QPushButton *ellipseSelBtn;
     QPushButton *curveSelBtn;
-
-    QSignalMapper *selectBtnSlotMapper;
 
     void uncheckAllToolBar();
 
