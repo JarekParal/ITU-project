@@ -10,6 +10,8 @@
 #include <QMouseEvent>
 #include <QPainter>
 #include <QToolBar>
+#include <QToolButton>
+#include <QButtonGroup>
 
 #include "paintArea.h"
 
@@ -71,7 +73,10 @@ private:
     QPushButton *ellipseSelBtn;
     QPushButton *curveSelBtn;
 
+    QButtonGroup *settingToolBoxButtonGroup;
+
     void uncheckAllToolBar();
+    void createSettingToolBox();
 
 public slots:
     void lineSelBtnSlot();
@@ -88,6 +93,7 @@ public slots:
     void canSelBtnSlot();
 
     void selectBtnSlot(PaintArea::PaintType type);
+    void buttonGroupClicked(int id);
 };
 
 #endif // MAINWINDOW_H

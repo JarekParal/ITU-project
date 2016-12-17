@@ -65,17 +65,21 @@ MainWindow::MainWindow(QWidget *parent) :
 
     mainLayout->addWidget(upToolBar, 0, 0, 1, 3);
 
-    lineSelBtn = new QPushButton(tr("&Line"));
-    lineSelBtn->setCheckable(true);
-    leftToolBar->addWidget(lineSelBtn);
-    connect(lineSelBtn, SIGNAL(clicked()),
-            this, SLOT(selectBtnSlot(PaintArea::PaintType::line)));
+    createSettingToolBox();
+    //mainLayout->addWidget(settingToolBoxButtonGroup);//', 1,3, 1, 1);
 
-    circleSelBtn = new QPushButton(tr("&Circle"));
-    circleSelBtn->setCheckable(true);
-    leftToolBar->addWidget(circleSelBtn);
-    connect(circleSelBtn, SIGNAL(clicked()),
-            this, SLOT(circleSelBtnSlot()));
+//    lineSelBtn = new QPushButton(tr("&Line"));
+//    lineSelBtn->setCheckable(true);
+//    leftToolBar->addWidget(lineSelBtn);
+//    connect(lineSelBtn, SIGNAL(clicked()),
+//            this, SLOT(selectBtnSlot(PaintArea::PaintType::line)));
+
+//    circleSelBtn = new QPushButton(tr("&Circle"));
+//    circleSelBtn->setCheckable(true);
+//    leftToolBar->addWidget(circleSelBtn);
+//    connect(circleSelBtn, SIGNAL(clicked()),
+//            this, SLOT(circleSelBtnSlot()));
+
     rectSelBtn = new QPushButton(tr("&Rect"));
     rectSelBtn->setCheckable(true);
     leftToolBar->addWidget(rectSelBtn);
@@ -101,6 +105,47 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+void MainWindow::buttonGroupClicked(int id)
+{
+    qDebug() << "selectBtnSlot: " << static_cast<int>(id);
+
+    PaintArea::PaintType type = static_cast<PaintArea::PaintType>(id);
+    paintArea->actualPaintType=type;
+
+    QList<QAbstractButton *> buttons = settingToolBoxButtonGroup->buttons();
+    foreach (QAbstractButton *button, buttons) {
+        if (settingToolBoxButtonGroup->button(id) != button)
+            button->setChecked(false);
+        else
+            button->setChecked(true);
+    }
+}
+
+void MainWindow::createSettingToolBox()
+{
+    settingToolBoxButtonGroup = new QButtonGroup(this);
+    settingToolBoxButtonGroup->setExclusive(false);
+
+    connect(settingToolBoxButtonGroup, SIGNAL(buttonClicked(int)),
+            this, SLOT(buttonGroupClicked(int)));
+
+    QPushButton *lineSelBtn = new QPushButton;
+    lineSelBtn->setText(tr("&Line"));
+    lineSelBtn->setCheckable(true);
+    lineSelBtn->setIconSize(QSize(50,50));
+    settingToolBoxButtonGroup->
+            addButton(lineSelBtn, static_cast<int>(PaintArea::PaintType::line));
+    leftToolBar->addWidget(lineSelBtn);
+
+    QPushButton *circleSelBtn = new QPushButton;
+    circleSelBtn->setText(tr("&Circle"));
+    circleSelBtn->setCheckable(true);
+    settingToolBoxButtonGroup->
+            addButton(circleSelBtn, static_cast<int>(PaintArea::PaintType::circle));
+    leftToolBar->addWidget(circleSelBtn);
+}
+
 
 
 void MainWindow::selectBtnSlot(PaintArea::PaintType type)
@@ -129,6 +174,7 @@ void MainWindow::uncheckAllToolBar()
     dropperButton->setChecked(false);
     canButton->setChecked(false);
 }
+
 
 void MainWindow::lineSelBtnSlot()
 {
