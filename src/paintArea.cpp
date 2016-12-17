@@ -8,8 +8,6 @@ PaintArea::PaintArea(QWidget *parent) : QWidget(parent)
 //    painter->drawPixmap(0,0,pixmap);
 
     painterPath.addRect(10, 10, 120, 120);
-
-
 }
 
 QSize PaintArea::minimumSizeHint() const
@@ -78,12 +76,12 @@ void PaintArea::saveToFile()
         return;
     }
 
-    QFile file(fileName);
-    if (file.open(QIODevice::WriteOnly) == false){
-        QMessageBox::information(this, QGuiApplication::applicationDisplayName(),
-                                 tr("Cannot open file for saving picture."));
-        return;
-    }
+//    QFile file(fileName);
+//    if (file.open(QIODevice::WriteOnly) == false){
+//        QMessageBox::information(this, QGuiApplication::applicationDisplayName(),
+//                                 tr("Cannot open file for saving picture."));
+//        return;
+//    }
 
     QImage picture;
     QPainter painter;
@@ -104,6 +102,23 @@ void PaintArea::saveToFile()
     } else {
         QMessageBox::information(this, QGuiApplication::applicationDisplayName(),
                                  tr("Picture successfully save."));
-
     }
+}
+
+void PaintArea::paintObject(PaintArea::Type type, int x1, int y1, int x2, int y2) {
+    switch (type) {
+    case PaintArea::Type::line:
+        //painterPath.moveTo(x1, y1);
+        painterPath.lineTo(x2, y2);
+
+        qDebug() << "x1: " << x1 << "  y1: " << y1 << "  x2: " << x2 << "  y2: " << y2 << "\n";
+
+//        QMessageBox::information(this, QGuiApplication::applicationDisplayName(),
+//                                 tr("Line -> painterPath"));
+        break;
+    default:
+        break;
+    }
+
+    this->update();
 }

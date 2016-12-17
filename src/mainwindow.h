@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QWidget>
 
+#include <QDebug>
+
 #include <QPushButton>
 #include <QMouseEvent>
 #include <QPainter>
@@ -32,6 +34,7 @@ private:
     PaintArea *paintArea;
     QPushButton * loadButton;
     QPushButton * saveButton;
+    int x, y;
 
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);

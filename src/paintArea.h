@@ -3,6 +3,8 @@
 
 #include <QWidget>
 
+#include <QDebug>
+
 #include <QBrush>
 #include <QPen>
 #include <QPixmap>
@@ -19,13 +21,14 @@ class PaintArea : public QWidget
 {
     Q_OBJECT
 public:
-    QPainter *painter;
-
     explicit PaintArea(QWidget *parent = 0);
-
 
     QSize minimumSizeHint() const Q_DECL_OVERRIDE;
     QSize sizeHint() const Q_DECL_OVERRIDE;
+
+    enum class Type { line, rect, circle };
+    void paintObject(PaintArea::Type type, int x1, int y1, int x2, int y2);
+
 
 signals:
 

@@ -39,21 +39,25 @@ MainWindow::~MainWindow()
 
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
-    points.append(event->pos());
+    //points.append(event->pos());
+    x = event->x();
+    y = event->y();
 
     this->update();
 }
 
 void MainWindow::mouseReleaseEvent(QMouseEvent *event)
 {
-    points.append(event->pos());
+    //points.append(event->pos());
+
+    paintArea->paintObject(paintArea->Type::line, x, y, event->x(), event->y());
 
     this->update();
 }
 
 void MainWindow::mouseMoveEvent(QMouseEvent *event)
 {
-    points.append(event->pos());
+    //points.append(event->pos());
 
     this->update();
 }
