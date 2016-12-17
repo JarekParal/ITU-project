@@ -10,11 +10,23 @@ MainWindow::MainWindow(QWidget *parent) :
 
     paintArea = new PaintArea;
 
+    loadButton = new QPushButton(tr("&Load"));
+    loadButton->setToolTip(tr("Load contacts from a file"));
+//    saveButton = new QPushButton(tr("&Save"));
+//    saveButton->setToolTip(tr("Save contacts to a file"));
+
     QGridLayout *mainLayout = new QGridLayout;
     mainLayout->setColumnStretch(0, 1);
     mainLayout->setColumnStretch(3, 1);
     mainLayout->addWidget(paintArea, 1, 0);
+    mainLayout->addWidget(loadButton, 0, 0);
+//    mainLayout->addWidget(saveButton, 0, 1);
     setLayout(mainLayout);
+
+    connect(loadButton, SIGNAL(clicked()), paintArea, SLOT(
+                loadFromFile()));
+//    connect(saveButton, SIGNAL(clicked()), paintArea, SLOT(
+//                saveToFile()));
 
     color = QColor(Qt::black);
 }

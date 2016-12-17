@@ -7,6 +7,13 @@
 #include <QPen>
 #include <QPixmap>
 #include <QPainter>
+#include <QPicture>
+#include <QImage>
+#include <QImageWriter>
+#include <QMessageBox>
+#include <QString>
+#include <QFileDialog>
+#include <QGuiApplication>
 
 class PaintArea : public QWidget
 {
@@ -23,11 +30,14 @@ public:
 signals:
 
 public slots:
+    void loadFromFile();
+    void saveToFile();
 
 protected:
     void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
 
 private:
+    QPainterPath painterPath;
     QPixmap pixmap;
 };
 
