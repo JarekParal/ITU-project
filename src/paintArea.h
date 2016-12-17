@@ -28,7 +28,7 @@ public:
     QSize minimumSizeHint() const Q_DECL_OVERRIDE;
     QSize sizeHint() const Q_DECL_OVERRIDE;
 
-    enum class PaintType { line, rect, circle, curve, ellipse };
+    enum class PaintType { line, rect, circle, curve, ellipse, pen, brush, text, rubber, dropper, can};
     void paintObject(PaintType type, int x1, int y1, int x2, int y2);
     PaintType actualPaintType;
 

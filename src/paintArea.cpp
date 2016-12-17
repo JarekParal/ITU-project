@@ -108,6 +108,9 @@ void PaintArea::paintObject(PaintType type, int x1, int y1, int x2, int y2) {
     paintActivate = false;
     paint.begin(image);
     paint.setPen(QColor(Qt::blue));
+    int myPenWidth = 20;
+
+    paint.setPen(QPen(Qt::green, myPenWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
 
     switch (type) {
         case PaintType::line:
@@ -133,6 +136,21 @@ void PaintArea::paintObject(PaintType type, int x1, int y1, int x2, int y2) {
         case PaintType::curve:
             paint.drawLine(x1,y1,x2,y2); //TODO
             qDebug() << "drawLine";
+            break;
+
+        case PaintType::pen:
+            paint.drawPoint(x2,y2);
+            qDebug() << "drawPen";
+            break;
+
+        case PaintType::brush:
+            paint.drawPoint(x2,y2); //TODO
+            qDebug() << "drawBrush";
+            break;
+
+        case PaintType::rubber:
+            paint.drawLine(x1,y1,x2,y2); //TODO
+            qDebug() << "drawRubber";
             break;
 
         default:
@@ -165,8 +183,13 @@ void PaintArea::mouseReleaseEvent(QMouseEvent *event)
 
 void PaintArea::mouseMoveEvent(QMouseEvent *event)
 {
-    delete image;
-    image = new QPixmap(imageBeforeMouseMoveEvent);
+    if(actualPaintType != PaintType::pen &&
+       actualPaintType != PaintType::rubber &&
+       actualPaintType != PaintType::brush)
+    {
+        delete image;
+        image = new QPixmap(imageBeforeMouseMoveEvent);
+    }
     paintObject(actualPaintType, x, y, event->x(), event->y());
     this->update();
 }

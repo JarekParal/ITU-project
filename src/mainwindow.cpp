@@ -30,16 +30,33 @@ MainWindow::MainWindow(QWidget *parent) :
 
     penButton = new QPushButton(tr("&Pen"));
     penButton->setCheckable(true);
+    connect(penButton, SIGNAL(clicked()),
+            this, SLOT(penSelBtnSlot()));
     upToolBar->addWidget(penButton);
     brushButton = new QPushButton(tr("&Brush"));
+    brushButton->setCheckable(true);
+    connect(brushButton, SIGNAL(clicked()),
+            this, SLOT(brushSelBtnSlot()));
     upToolBar->addWidget(brushButton);
     textButton = new QPushButton(tr("&Text"));
+    textButton->setCheckable(true);
+    connect(textButton, SIGNAL(clicked()),
+            this, SLOT(textSelBtnSlot()));
     upToolBar->addWidget(textButton);
     rubberButton = new QPushButton(tr("&Rubber"));
+    rubberButton->setCheckable(true);
+    connect(rubberButton, SIGNAL(clicked()),
+            this, SLOT(rubberSelBtnSlot()));
     upToolBar->addWidget(rubberButton);
     dropperButton = new QPushButton(tr("&Dropper"));
+    dropperButton->setCheckable(true);
+    connect(dropperButton, SIGNAL(clicked()),
+            this, SLOT(dropperSelBtnSlot()));
     upToolBar->addWidget(dropperButton);
     canButton = new QPushButton(tr("&Can"));
+    canButton->setCheckable(true);
+    connect(canButton, SIGNAL(clicked()),
+            this, SLOT(canSelBtnSlot()));
     upToolBar->addWidget(canButton);
 
     mainLayout->addWidget(upToolBar, 0, 0, 1, 3);
@@ -83,18 +100,25 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::uncheckAllLeftToolBar()
+void MainWindow::uncheckAllToolBar()
 {
     lineSelBtn->setChecked(false);
     circleSelBtn->setChecked(false);
     rectSelBtn->setChecked(false);
     ellipseSelBtn->setChecked(false);
     curveSelBtn->setChecked(false);
+
+    penButton->setChecked(false);
+    brushButton->setChecked(false);
+    textButton->setChecked(false);
+    rubberButton->setChecked(false);
+    dropperButton->setChecked(false);
+    canButton->setChecked(false);
 }
 
 void MainWindow::lineSelBtnSlot()
 {
-    uncheckAllLeftToolBar();
+    uncheckAllToolBar();
     lineSelBtn->setChecked(true);
     paintArea->actualPaintType=paintArea->PaintType::line;
 
@@ -103,7 +127,7 @@ void MainWindow::lineSelBtnSlot()
 
 void MainWindow::circleSelBtnSlot()
 {
-    uncheckAllLeftToolBar();
+    uncheckAllToolBar();
     circleSelBtn->setChecked(true);
     paintArea->actualPaintType=paintArea->PaintType::circle;
 
@@ -112,7 +136,7 @@ void MainWindow::circleSelBtnSlot()
 
 void MainWindow::rectSelBtnSlot()
 {
-    uncheckAllLeftToolBar();
+    uncheckAllToolBar();
     rectSelBtn->setChecked(true);
     paintArea->actualPaintType=paintArea->PaintType::rect;
 
@@ -121,16 +145,61 @@ void MainWindow::rectSelBtnSlot()
 
 void MainWindow::ellipseSelBtnSlot()
 {
-    uncheckAllLeftToolBar();
+    uncheckAllToolBar();
     ellipseSelBtn->setChecked(true);
     paintArea->actualPaintType=paintArea->PaintType::ellipse;
 }
 
 void MainWindow::curveSelBtnSlot()
 {
-    uncheckAllLeftToolBar();
+    uncheckAllToolBar();
     curveSelBtn->setChecked(true);
     paintArea->actualPaintType=paintArea->PaintType::curve;
+}
+
+
+
+
+void MainWindow::penSelBtnSlot()
+{
+    uncheckAllToolBar();
+    penButton->setChecked(true);
+    paintArea->actualPaintType=paintArea->PaintType::pen;
+}
+
+void MainWindow::brushSelBtnSlot()
+{
+    uncheckAllToolBar();
+    brushButton->setChecked(true);
+    paintArea->actualPaintType=paintArea->PaintType::brush;
+}
+
+void MainWindow::textSelBtnSlot()
+{
+    uncheckAllToolBar();
+    textButton->setChecked(true);
+    paintArea->actualPaintType=paintArea->PaintType::text;
+}
+
+void MainWindow::rubberSelBtnSlot()
+{
+    uncheckAllToolBar();
+    rubberButton->setChecked(true);
+    paintArea->actualPaintType=paintArea->PaintType::rubber;
+}
+
+void MainWindow::dropperSelBtnSlot()
+{
+    uncheckAllToolBar();
+    dropperButton->setChecked(true);
+    paintArea->actualPaintType=paintArea->PaintType::dropper;
+}
+
+void MainWindow::canSelBtnSlot()
+{
+    uncheckAllToolBar();
+    canButton->setChecked(true);
+    paintArea->actualPaintType=paintArea->PaintType::can;
 }
 
 
