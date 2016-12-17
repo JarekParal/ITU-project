@@ -79,16 +79,16 @@ MainWindow::MainWindow(QWidget *parent) :
 //            this, SLOT(circleSelBtnSlot()));
 
     selectBtnSlotMapper = new QSignalMapper(this);
-    selectBtnSlotMapper->setMapping(lineSelBtn, 1);
-    selectBtnSlotMapper->setMapping(circleSelBtn, 2);
+    selectBtnSlotMapper->setMapping(lineSelBtn, PaintArea::PaintType::line);
+    selectBtnSlotMapper->setMapping(circleSelBtn, PaintArea::PaintType::circle);
 
     connect(lineSelBtn, &QPushButton::clicked,
         selectBtnSlotMapper, &QSignalMapper::map);
     connect(circleSelBtn, &QPushButton::clicked,
         selectBtnSlotMapper, &QSignalMapper::map);
 
-    connect(selectBtnSlotMapper, SIGNAL(mapped(int)),
-           this, SLOT(selectBtnSlot(int)));
+    connect(selectBtnSlotMapper, SIGNAL(mapped(PaintArea::PaintType)),
+           this, SLOT(selectBtnSlot(PaintArea::PaintType)));
 
     rectSelBtn = new QPushButton(tr("&Rect"));
     rectSelBtn->setCheckable(true);
@@ -117,11 +117,11 @@ MainWindow::~MainWindow()
 }
 
 
-void MainWindow::selectBtnSlot(int type)
+void MainWindow::selectBtnSlot(PaintArea::PaintType type)
 {
     qDebug() << "selectBtnSlot: " << static_cast<int>(type);
 
-    if(type == static_cast<int>(PaintArea::PaintType::line))
+    if(type == PaintArea::PaintType::line)
     {
         lineSelBtn->setChecked(true);
         paintArea->actualPaintType=PaintArea::PaintType::line;

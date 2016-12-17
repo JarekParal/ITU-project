@@ -91,7 +91,7 @@ public slots:
     void dropperSelBtnSlot();
     void canSelBtnSlot();
 
-    void selectBtnSlot(int type);
+    void selectBtnSlot(PaintArea::PaintType type);
 };
 
 #endif // MAINWINDOW_H
