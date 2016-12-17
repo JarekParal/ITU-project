@@ -126,11 +126,13 @@ void PaintArea::paintObject(PaintType type, int x1, int y1, int x2, int y2) {
             break;
 
         case PaintType::ellipse:
-        paint.drawEllipse(x1,y1,x2-x1,y2-y1);
+            paint.drawEllipse(x1,y1,x2-x1,y2-y1);
+            qDebug() << "drawEllipse";
             break;
 
         case PaintType::curve:
             paint.drawLine(x1,y1,x2,y2);
+            qDebug() << "drawLine";
             break;
 
         default:
@@ -156,7 +158,7 @@ void PaintArea::mousePressEvent(QMouseEvent *event)
 
 void PaintArea::mouseReleaseEvent(QMouseEvent *event)
 {
-    paintObject(PaintType::line, x, y, event->x(), event->y());
+    paintObject(actualPaintType, x, y, event->x(), event->y());
 
     this->update();
 }
