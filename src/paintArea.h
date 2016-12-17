@@ -16,6 +16,8 @@
 #include <QString>
 #include <QFileDialog>
 #include <QGuiApplication>
+#include <QRect>
+#include <QPaintEvent>
 
 class PaintArea : public QWidget
 {
@@ -40,8 +42,12 @@ protected:
     void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
 
 private:
+    QPainter *painter;
     QPainterPath painterPath;
     QPixmap pixmap;
+    QPixmap* image;
+
+    int paintActivate;
 };
 
 #endif // PAINTAREA_H

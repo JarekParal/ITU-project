@@ -2,10 +2,32 @@
 
 PaintArea::PaintArea(QWidget *parent) : QWidget(parent)
 {
+    //To allow paint events outside of paintEvent
+    setAttribute(Qt::WA_StaticContents);
+
 //    painter = new QPainter(this);
 
 //    pixmap.load(":/images/qt-logo.png");
 //    painter->drawPixmap(0,0,pixmap);
+
+    image = new QPixmap();
+    paintActivate = false;
+
+//    QPainter paint;
+//    paint.begin(image);
+//    paint.setPen(QColor(Qt::blue));
+//    paint.drawLine(0,0,100,100);
+//    paint.end();
+
+    painter = new QPainter(this);
+
+    //painter.begin(image);
+    painter->setPen(QColor(Qt::blue));
+    painter->drawLine(0,0,100,100);
+    painter->end();
+
+
+    paintActivate = true;
 
     painterPath.addRect(10, 10, 120, 120);
 }
@@ -20,21 +42,25 @@ QSize PaintArea::sizeHint() const
     return QSize(400, 200);
 }
 
-void PaintArea::paintEvent(QPaintEvent * /* event */)
+void PaintArea::paintEvent(QPaintEvent * event)
 {
-    QPainter paint(this);
+//    if(paintActivate == true) {
+//        QPainter painter(this);
+//        QRect rec = event->rect();
+//        painter.drawPixmap(rec, *image, rec);
+//    }
 
-    paint.drawPixmap(0,0,pixmap);
+//    paint.drawPixmap(0,0,pixmap);
 
-    paint.setPen(QColor(Qt::blue));
-    paint.drawLine(0,0,100,100);
+//    paint.setPen(QColor(Qt::blue));
+//    paint.drawLine(0,0,100,100);
 
-    QBrush fillBrush;
-    fillBrush.setColor(Qt::red);
-    fillBrush.setStyle(Qt::SolidPattern);
+//    QBrush fillBrush;
+//    fillBrush.setColor(Qt::red);
+//    fillBrush.setStyle(Qt::SolidPattern);
 
-    //paint.fillPath(painterPath, fillBrush);
-    paint.drawPath(painterPath);
+//    //paint.fillPath(painterPath, fillBrush);
+//    paint.drawPath(painterPath);
 }
 
 void PaintArea::loadFromFile()
