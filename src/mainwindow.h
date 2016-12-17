@@ -75,23 +75,9 @@ private:
 
     QButtonGroup *settingToolBoxButtonGroup;
 
-    void uncheckAllToolBar();
     void createSettingToolBox();
 
 public slots:
-    void lineSelBtnSlot();
-    void circleSelBtnSlot();
-    void rectSelBtnSlot();
-    void ellipseSelBtnSlot();
-    void curveSelBtnSlot();
-
-    void penSelBtnSlot();
-    void brushSelBtnSlot();
-    void textSelBtnSlot();
-    void rubberSelBtnSlot();
-    void dropperSelBtnSlot();
-    void canSelBtnSlot();
-
     void selectBtnSlot(PaintArea::PaintType type);
     void buttonGroupClicked(int id);
 };
