@@ -4,7 +4,7 @@
 #include <QGridLayout>
 
 MainWindow::MainWindow(QWidget *parent) :
-    QWidget(parent)//, ui(new Ui::MainWindow)
+    QMainWindow(parent)//, ui(new Ui::MainWindow)
 {
     //ui->setupUi(this);
 
@@ -15,18 +15,20 @@ MainWindow::MainWindow(QWidget *parent) :
 //    saveButton = new QPushButton(tr("&Save"));
 //    saveButton->setToolTip(tr("Save contacts to a file"));
 
-    QGridLayout *mainLayout = new QGridLayout;
-    mainLayout->setColumnStretch(0, 1);
-    mainLayout->setColumnStretch(3, 1);
-    mainLayout->addWidget(paintArea, 1, 0);
-    mainLayout->addWidget(loadButton, 0, 0);
-//    mainLayout->addWidget(saveButton, 0, 1);
-    setLayout(mainLayout);
+    setCentralWidget(paintArea);
 
-    connect(loadButton, SIGNAL(clicked()), paintArea, SLOT(
-                loadFromFile()));
-//    connect(saveButton, SIGNAL(clicked()), paintArea, SLOT(
-//                saveToFile()));
+//    QGridLayout *mainLayout = new QGridLayout;
+//    mainLayout->setColumnStretch(0, 1);
+//    mainLayout->setColumnStretch(3, 1);
+//    mainLayout->addWidget(paintArea, 1, 0);
+//    mainLayout->addWidget(loadButton, 0, 0);
+////    mainLayout->addWidget(saveButton, 0, 1);
+//    setLayout(mainLayout);
+
+//    connect(loadButton, SIGNAL(clicked()), paintArea, SLOT(
+//                loadFromFile()));
+////    connect(saveButton, SIGNAL(clicked()), paintArea, SLOT(
+////                saveToFile()));
 
     color = QColor(Qt::black);
 }

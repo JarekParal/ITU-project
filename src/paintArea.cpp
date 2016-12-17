@@ -10,24 +10,17 @@ PaintArea::PaintArea(QWidget *parent) : QWidget(parent)
 //    pixmap.load(":/images/qt-logo.png");
 //    painter->drawPixmap(0,0,pixmap);
 
-    image = new QPixmap();
+    image = new QPixmap(800, 800);
     paintActivate = false;
 
-//    QPainter paint;
-//    paint.begin(image);
-//    paint.setPen(QColor(Qt::blue));
-//    paint.drawLine(0,0,100,100);
-//    paint.end();
-
-    painter = new QPainter(this);
-
-    //painter.begin(image);
-    painter->setPen(QColor(Qt::blue));
-    painter->drawLine(0,0,100,100);
-    painter->end();
-
-
+    QPainter paint;
+    paint.begin(image);
+    paint.setPen(QColor(Qt::blue));
+    paint.drawLine(0,0,100,100);
+    paint.end();
     paintActivate = true;
+
+    qDebug() << "PaintArea constructor - end\n";
 
     painterPath.addRect(10, 10, 120, 120);
 }
@@ -44,11 +37,13 @@ QSize PaintArea::sizeHint() const
 
 void PaintArea::paintEvent(QPaintEvent * event)
 {
-//    if(paintActivate == true) {
-//        QPainter painter(this);
-//        QRect rec = event->rect();
-//        painter.drawPixmap(rec, *image, rec);
-//    }
+    qDebug() << "PaintEvent\n";
+
+    if(paintActivate == true) {
+        QPainter painter(this);
+        QRect rec = event->rect();
+        painter.drawPixmap(rec, *image, rec);
+    }
 
 //    paint.drawPixmap(0,0,pixmap);
 
@@ -132,10 +127,21 @@ void PaintArea::saveToFile()
 }
 
 void PaintArea::paintObject(PaintArea::Type type, int x1, int y1, int x2, int y2) {
+    QPainter paint;
+
     switch (type) {
     case PaintArea::Type::line:
         //painterPath.moveTo(x1, y1);
         painterPath.lineTo(x2, y2);
+
+        paintActivate = false;
+
+        paint.begin(image);
+        paint.setPen(QColor(Qt::blue));
+        paint.drawLine(x1,y1,x2,y2);
+        paint.end();
+        paintActivate = true;
+
 
         qDebug() << "x1: " << x1 << "  y1: " << y1 << "  x2: " << x2 << "  y2: " << y2 << "\n";
 
