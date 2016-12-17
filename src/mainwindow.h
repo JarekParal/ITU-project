@@ -44,8 +44,17 @@ private:
     QPushButton *lineSelBtn;
     QPushButton *circleSelBtn;
     QPushButton *rectSelBtn;
-    QPushButton *elipseSelBtn;
+    QPushButton *ellipseSelBtn;
     QPushButton *curveSelBtn;
+
+    void uncheckAllLeftToolBar();
+
+public slots:
+    void lineSelBtnSlot();
+    void circleSelBtnSlot();
+    void rectSelBtnSlot();
+    void ellipseSelBtnSlot();
+    void curveSelBtnSlot();
 };
 
 #endif // MAINWINDOW_H

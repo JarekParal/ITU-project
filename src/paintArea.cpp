@@ -5,6 +5,8 @@ PaintArea::PaintArea(QWidget *parent) : QWidget(parent)
     //To allow paint events outside of paintEvent
     //setAttribute(Qt::WA_StaticContents);
 
+    actualPaintType = PaintType::line;
+
     image = new QPixmap(800, 800);
     image->fill(Qt::white);
 
@@ -101,28 +103,48 @@ void PaintArea::saveToFile()
     }
 }
 
-void PaintArea::paintObject(PaintArea::PaintType type, int x1, int y1, int x2, int y2) {
+void PaintArea::paintObject(PaintType type, int x1, int y1, int x2, int y2) {
     QPainter paint;
+    paintActivate = false;
+    paint.begin(image);
+    paint.setPen(QColor(Qt::blue));
 
     switch (type) {
-    case PaintArea::PaintType::line:
-        paintActivate = false;
-        paint.begin(image);
-        paint.setPen(QColor(Qt::blue));
-        paint.drawLine(x1,y1,x2,y2);
-        paint.end();
-        paintActivate = true;
+        case PaintType::line:
+            paint.drawLine(x1,y1,x2,y2);
+            qDebug() << "drawLine";
+            break;
 
-        qDebug() << "x1: " << x1 << "  y1: " << y1 << "  x2: " << x2 << "  y2: " << y2 << "\n";
+        case PaintType::circle:
+            paint.drawEllipse(x1,y1,x2-x1,y2-y1);
+            qDebug() << "drawEllipse";
+            break;
 
-        break;
-    default:
-        break;
+        case PaintType::rect:
+            paint.drawRect(x1,y1,x2-x1,y2-y1);
+            qDebug() << "drawRect";
+            break;
+
+        case PaintType::ellipse:
+        paint.drawEllipse(x1,y1,x2-x1,y2-y1);
+            break;
+
+        case PaintType::curve:
+            paint.drawLine(x1,y1,x2,y2);
+            break;
+
+        default:
+            break;
     }
 
+    qDebug() << static_cast<int>(actualPaintType);
+
+    qDebug() << "x: " << x1 << " -> " << x2 << " (" << x2-x1 << ")  "
+             << "y: " << y1 << " -> " << y2 << " (" << y2-y1 << ")\n";
+    paint.end();
+    paintActivate = true;
     this->update();
 }
-
 
 void PaintArea::mousePressEvent(QMouseEvent *event)
 {
@@ -134,8 +156,6 @@ void PaintArea::mousePressEvent(QMouseEvent *event)
 
 void PaintArea::mouseReleaseEvent(QMouseEvent *event)
 {
-    Q_UNUSED(event);
-
     paintObject(PaintType::line, x, y, event->x(), event->y());
 
     this->update();
@@ -143,8 +163,7 @@ void PaintArea::mouseReleaseEvent(QMouseEvent *event)
 
 void PaintArea::mouseMoveEvent(QMouseEvent *event)
 {
-    //points.append(event->pos());
-
+    Q_UNUSED(event);
     this->update();
 }
 

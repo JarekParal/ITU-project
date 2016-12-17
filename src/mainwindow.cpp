@@ -49,14 +49,24 @@ MainWindow::MainWindow(QWidget *parent) :
 
     lineSelBtn = new QPushButton(tr("&Line"));
     leftToolBar->addWidget(lineSelBtn);
+    connect(lineSelBtn, SIGNAL(clicked()),
+            this, SLOT(lineSelBtnSlot()));
     circleSelBtn = new QPushButton(tr("&Circle"));
     leftToolBar->addWidget(circleSelBtn);
+    connect(circleSelBtn, SIGNAL(clicked()),
+            this, SLOT(circleSelBtnSlot()));
     rectSelBtn = new QPushButton(tr("&Rect"));
     leftToolBar->addWidget(rectSelBtn);
-    elipseSelBtn = new QPushButton(tr("&Elipse"));
-    leftToolBar->addWidget(elipseSelBtn);
+    connect(rectSelBtn, SIGNAL(clicked()),
+            this, SLOT(rectSelBtnSlot()));
+    ellipseSelBtn = new QPushButton(tr("&Elipse"));
+    leftToolBar->addWidget(ellipseSelBtn);
+    connect(ellipseSelBtn, SIGNAL(clicked()),
+            this, SLOT(ellipseSelBtnSlot()));
     curveSelBtn = new QPushButton(tr("&Curve"));
     leftToolBar->addWidget(curveSelBtn);
+    connect(curveSelBtn, SIGNAL(clicked()),
+            this, SLOT(curveSelBtnSlot()));
 
     mainLayout->addWidget(leftToolBar, 1, 0);
 
@@ -67,6 +77,57 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+void MainWindow::uncheckAllLeftToolBar()
+{
+    lineSelBtn->setChecked(false);
+    circleSelBtn->setChecked(false);
+    rectSelBtn->setChecked(false);
+    ellipseSelBtn->setChecked(false);
+    curveSelBtn->setChecked(false);
+}
+
+void MainWindow::lineSelBtnSlot()
+{
+    uncheckAllLeftToolBar();
+    lineSelBtn->setChecked(false);
+    paintArea->actualPaintType=paintArea->PaintType::line;
+
+    qDebug() << "lineSelBtnSlot: " << static_cast<int>(paintArea->actualPaintType) << "\n";
+}
+
+void MainWindow::circleSelBtnSlot()
+{
+    uncheckAllLeftToolBar();
+    circleSelBtn->setChecked(false);
+    paintArea->actualPaintType=paintArea->PaintType::circle;
+
+    qDebug() << "circleSelBtnSlot: " << static_cast<int>(paintArea->actualPaintType) << "\n";
+}
+
+void MainWindow::rectSelBtnSlot()
+{
+    uncheckAllLeftToolBar();
+    rectSelBtn->setChecked(false);
+    paintArea->actualPaintType=paintArea->PaintType::rect;
+
+    qDebug() << "circleSelBtnSlot: " << static_cast<int>(paintArea->actualPaintType) << "\n";
+}
+
+void MainWindow::ellipseSelBtnSlot()
+{
+    uncheckAllLeftToolBar();
+    ellipseSelBtn->setChecked(false);
+    paintArea->actualPaintType=paintArea->PaintType::ellipse;
+}
+
+void MainWindow::curveSelBtnSlot()
+{
+    uncheckAllLeftToolBar();
+    curveSelBtn->setChecked(false);
+    paintArea->actualPaintType=paintArea->PaintType::curve;
+}
+
 
 //void MainWindow::keyPressEvent(QKeyEvent *event)
 //{
