@@ -11,21 +11,27 @@ MainWindow::MainWindow(QWidget *parent) :
     QGuiApplication::setApplicationDisplayName("ITU-project Paint");
 
     paintArea = new PaintArea;
+    scrollArea.setWidget(paintArea);
 
     QGridLayout *mainLayout = new QGridLayout;
     mainLayout->setColumnStretch(0, 1);
     mainLayout->setColumnStretch(3, 1);
-    mainLayout->addWidget(paintArea, 1, 1);
+    mainLayout->addWidget(&scrollArea, 1, 1);
 
     leftToolBar = new QToolBar;
     leftToolBar->setOrientation(Qt::Vertical);
     createToolBar();
     mainLayout->addWidget(leftToolBar, 1, 0);
 
-    setStylelBar = new QToolBar;
-    setStylelBar->setOrientation(Qt::Vertical);
+    setStyleBar = new QToolBar;
+    setStyleBar->setOrientation(Qt::Vertical);
     createStyleBar();
-    mainLayout->addWidget(setStylelBar, 1, 2);
+    mainLayout->addWidget(setStyleBar, 1, 2);
+
+    setWidthBar = new QToolBar;
+    setWidthBar->setOrientation(Qt::Vertical);
+    createWidthBar();
+    mainLayout->addWidget(setWidthBar, 1, 3);
 
     upToolBar = new QToolBar;
     mainLayout->addWidget(upToolBar, 0, 0, 1, 3);
@@ -57,6 +63,33 @@ void MainWindow::styleBarButtonGroupClicked(int id)
     setButtonGroupChecked(styleBarButtonGroup, id);
 }
 
+void MainWindow::widthBarButtonGroupClicked(int id)
+{
+    paintArea->actualPenWidth = id;
+
+
+    setButtonGroupChecked(widthBarButtonGroup, id);
+}
+
+void MainWindow::createWidthBar()
+{
+    widthBarButtonGroup = new QButtonGroup(this);
+    widthBarButtonGroup->setExclusive(false);
+
+    connect(widthBarButtonGroup, SIGNAL(buttonClicked(int)),
+           this, SLOT(widthBarButtonGroupClicked(int)));
+
+    const int widthBtnCount = 20;
+    QPushButton *widthBtn[widthBtnCount];
+    for(int i = 1; i <= widthBtnCount; ++i) {
+        widthBtn[i-1] = new QPushButton(QString::number(i));
+        widthBtn[i-1]->setCheckable(true);
+        widthBarButtonGroup->
+                addButton(widthBtn[i-1], i);
+        setWidthBar->addWidget(widthBtn[i-1]);
+    }
+}
+
 
 void MainWindow::createStyleBar()
 {
@@ -70,31 +103,31 @@ void MainWindow::createStyleBar()
     style_SolidLine_Btn->setCheckable(true);
     styleBarButtonGroup->
             addButton(style_SolidLine_Btn, static_cast<int>(Qt::SolidLine));
-    setStylelBar->addWidget(style_SolidLine_Btn);
+    setStyleBar->addWidget(style_SolidLine_Btn);
 
     QPushButton *style_DashLine_Btn = new QPushButton(tr("&DashLine"));
     style_DashLine_Btn->setCheckable(true);
     styleBarButtonGroup->
             addButton(style_DashLine_Btn, static_cast<int>(Qt::DashLine));
-    setStylelBar->addWidget(style_DashLine_Btn);
+    setStyleBar->addWidget(style_DashLine_Btn);
 
     QPushButton *style_DotLine_Btn = new QPushButton(tr("&DotLine"));
     style_DotLine_Btn->setCheckable(true);
     styleBarButtonGroup->
             addButton(style_DotLine_Btn, static_cast<int>(Qt::DotLine));
-    setStylelBar->addWidget(style_DotLine_Btn);
+    setStyleBar->addWidget(style_DotLine_Btn);
 
     QPushButton *style_DashDotLine_Btn = new QPushButton(tr("&DashDotLine"));
     style_DashDotLine_Btn->setCheckable(true);
     styleBarButtonGroup->
             addButton(style_DashDotLine_Btn, static_cast<int>(Qt::DashDotLine));
-    setStylelBar->addWidget(style_DashDotLine_Btn);
+    setStyleBar->addWidget(style_DashDotLine_Btn);
 
     QPushButton *style_DashDotDotLine_Btn = new QPushButton(tr("&DashDotDotLine"));
     style_DashDotDotLine_Btn->setCheckable(true);
     styleBarButtonGroup->
             addButton(style_DashDotDotLine_Btn, static_cast<int>(Qt::DashDotDotLine));
-    setStylelBar->addWidget(style_DashDotDotLine_Btn);
+    setStyleBar->addWidget(style_DashDotDotLine_Btn);
 
 //    QPushButton *style_CustomDashLine_Btn = new QPushButton(tr("&CustomDashLine"));
 //    style_CustomDashLine_Btn->setCheckable(true);

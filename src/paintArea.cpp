@@ -7,8 +7,9 @@ PaintArea::PaintArea(QWidget *parent) : QWidget(parent)
 
     actualPaintType = PaintType::line;
     actualPenStyle = Qt::SolidLine;
+    actualPenWidth = 1;
 
-    image = new QPixmap(800, 800);
+    image = new QPixmap(400, 400);
     image->fill(Qt::white);
 
     paintActivate = true;
@@ -21,7 +22,7 @@ QSize PaintArea::minimumSizeHint() const
 
 QSize PaintArea::sizeHint() const
 {
-    return QSize(800, 800);
+    return image->size();
 }
 
 void PaintArea::paintEvent(QPaintEvent * event)
@@ -54,6 +55,7 @@ void PaintArea::loadFromFile()
     } else {
         delete(image);
         image = new QPixmap(pixmap);
+        this->resize(image->size());
 
         QMessageBox::information(this, QGuiApplication::applicationDisplayName(),
                                  tr("Picture successfully load."));
@@ -91,9 +93,8 @@ void PaintArea::paintObject(PaintType type, int x1, int y1, int x2, int y2) {
     paintActivate = false;
     paint.begin(image);
     paint.setPen(QColor(Qt::blue));
-    int myPenWidth = 20;
 
-    paint.setPen(QPen(Qt::green, myPenWidth, actualPenStyle, Qt::RoundCap, Qt::RoundJoin));
+    paint.setPen(QPen(Qt::green, actualPenWidth, actualPenStyle, Qt::RoundCap, Qt::RoundJoin));
 
     switch (type) {
         case PaintType::line:
