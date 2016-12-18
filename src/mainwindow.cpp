@@ -4,44 +4,72 @@
 #include <QGridLayout>
 
 MainWindow::MainWindow(QWidget *parent) :
-    QWidget(parent)//, ui(new Ui::MainWindow)
+    QMainWindow(parent), ui(new Ui::MainWindow)
 {
-    //ui->setupUi(this);
+    ui->setupUi(this);
 
     QGuiApplication::setApplicationDisplayName("ITU-project Paint");
 
     paintArea = new PaintArea;
     scrollArea.setWidget(paintArea);
 
-    QGridLayout *mainLayout = new QGridLayout;
+    mainLayout = new QGridLayout;
     mainLayout->setColumnStretch(0, 1);
     mainLayout->setColumnStretch(3, 1);
-    mainLayout->addWidget(&scrollArea, 1, 1);
+    //mainLayout->addWidget(&scrollArea, 1, 1);
+
+    upToolBar = new QToolBar;
+    upToolBar->setOrientation(Qt::Horizontal);
+    createUpToolBar();
+    upToolBar->setMovable(false);
 
     setStyleBar = new QToolBar;
     setStyleBar->setOrientation(Qt::Vertical);
     createStyleBar();
-    mainLayout->addWidget(setStyleBar, 1, 2);
 
     setWidthBar = new QToolBar;
     setWidthBar->setOrientation(Qt::Vertical);
     createWidthBar();
-    mainLayout->addWidget(setWidthBar, 1, 3);
 
     setColorBar = new QToolBar;
     setColorBar->setOrientation(Qt::Vertical);
     createColorBar();
-    mainLayout->addWidget(setColorBar, 1, 4);
 
     leftToolBar = new QToolBar;
     leftToolBar->setOrientation(Qt::Vertical);
     createToolBar();
-    mainLayout->addWidget(leftToolBar, 1, 0);
 
-    upToolBar = new QToolBar;
-    mainLayout->addWidget(upToolBar, 0, 0, 1, 3);
+    //// Old style of layouting - MainWindow : QWidget
+    //rightToolLayout = new QHBoxLayout;
+    //mainLayout->addLayout(rightToolLayout, 1, 2);
 
-    setLayout(mainLayout);
+    //mainLayout->addWidget(upToolBar, 0, 0, 1, 3);
+
+    //mainLayout->addWidget(setStyleBar, 1, 2);
+    //rightToolLayout->addWidget(setStyleBar);
+
+    //mainLayout->addWidget(setWidthBar, 1, 3);
+    //rightToolLayout->addWidget(setWidthBar);
+
+    //mainLayout->addWidget(setColorBar, 1, 4);
+    //rightToolLayout->addWidget(setColorBar);
+
+    //mainLayout->addWidget(leftToolBar, 1, 0);
+    //setLayout(mainLayout);
+
+
+    //// New style of layouting - MainWindow : QMainWindow
+    setCentralWidget(&scrollArea);
+
+    addToolBar(upToolBar);
+
+    addToolBar(Qt::RightToolBarArea, setColorBar);
+    addToolBarBreak(Qt::RightToolBarArea);
+    addToolBar(Qt::RightToolBarArea, setStyleBar);
+    addToolBarBreak(Qt::RightToolBarArea);
+    addToolBar(Qt::RightToolBarArea, setWidthBar);
+
+    addToolBar(Qt::LeftToolBarArea, leftToolBar);
 }
 
 MainWindow::~MainWindow()
@@ -49,6 +77,42 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::upToolBarButtonGroupClicked(int id)
+{
+    switch (static_cast<SettingBar>(id)) {
+        case SettingBar::style:
+            if(setStyleBar->isHidden())
+                setStyleBar->show();
+            else
+                setStyleBar->hide();
+            break;
+
+        case SettingBar::width:
+            if(setWidthBar->isHidden())
+                setWidthBar->show();
+            else
+                setWidthBar->hide();
+            break;
+
+        case SettingBar::color:
+            if(setColorBar->isHidden()) {
+                setColorBar->show();
+            } else {
+                setColorBar->hide();
+            }
+            break;
+
+//        case SettingBar::style:
+//            if(setStyleBar->isHidden())
+//                setStyleBar->show();
+//            else
+//                setStyleBar->hide();
+//            break;
+
+        default:
+            break;
+    }
+}
 
 void MainWindow::styleBarButtonGroupClicked(int id)
 {
@@ -91,6 +155,44 @@ void MainWindow::toolBarButtonGroupClicked(int id)
     paintArea->actualPaintType=type;
 
     setButtonGroupChecked(toolBarButtonGroup, id);
+}
+
+void MainWindow::createUpToolBar()
+{
+    upToolBarButtonGroup = new QButtonGroup(this);
+    upToolBarButtonGroup->setExclusive(false);
+
+    connect(upToolBarButtonGroup, SIGNAL(buttonClicked(int)),
+           this, SLOT(upToolBarButtonGroupClicked(int)));
+
+    QPushButton *setStyleBtn = new QPushButton(tr("&Style"));
+    setStyleBtn->setCheckable(true);
+    upToolBarButtonGroup->
+            addButton(setStyleBtn, static_cast<int>(SettingBar::style));
+    upToolBar->addWidget(setStyleBtn);
+
+//    QPushButton *setBrushBtn = new QPushButton(tr("&Brush"));
+//    setBrushBtn->setCheckable(true);
+//    upToolBarButtonGroup->
+//            addButton(setBrushBtn, static_cast<int>(SettingBar::brush));
+//    upToolBar->addWidget(setBrushBtn);
+
+    QPushButton *setWidthBtn = new QPushButton(tr("&Width"));
+    setWidthBtn->setCheckable(true);
+    upToolBarButtonGroup->
+            addButton(setWidthBtn, static_cast<int>(SettingBar::width));
+    upToolBar->addWidget(setWidthBtn);
+
+    QPushButton *setColorBtn = new QPushButton(tr("&Color"));
+    setColorBtn->setCheckable(true);
+    upToolBarButtonGroup->
+            addButton(setColorBtn, static_cast<int>(SettingBar::color));
+    upToolBar->addWidget(setColorBtn);
+
+    QList<QAbstractButton *> buttons = upToolBarButtonGroup->buttons();
+    foreach (QAbstractButton *button, buttons) {
+        button->setChecked(true);
+    }
 }
 
 void MainWindow::createStyleBar()

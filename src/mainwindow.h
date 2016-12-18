@@ -12,6 +12,7 @@
 #include <QPainter>
 #include <QToolBar>
 #include <QToolButton>
+#include <QHBoxLayout>
 #include <QButtonGroup>
 #include <QColor>
 
@@ -21,7 +22,7 @@ namespace Ui {
 class MainWindow;
 }
 
-class MainWindow : public QWidget
+class MainWindow : public QMainWindow //QWidget
 {
     Q_OBJECT
 
@@ -31,11 +32,18 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    QGridLayout *mainLayout;
 
     QScrollArea scrollArea;
     PaintArea *paintArea;
 
+    QHBoxLayout *rightToolLayout;
     QToolBar *upToolBar;
+    QButtonGroup *upToolBarButtonGroup;
+    void createUpToolBar();
+
+    enum class SettingBar { style, brush, width, color};
+
     QPushButton *setStyleBtn;
     QPushButton *setBrushBtn;
     QPushButton *setWidthBtn;
@@ -83,6 +91,7 @@ private:
 
 
 public slots:
+    void upToolBarButtonGroupClicked(int id);
     void toolBarButtonGroupClicked(int id);
     void styleBarButtonGroupClicked(int id);
     void widthBarButtonGroupClicked(int id);
