@@ -57,6 +57,7 @@ private:
 
     QVector <QPoint> curvePoints;
     QPolygon drawPoints;
+    int rubberSizeMultiplication;
 
     int paintActivate;
 };

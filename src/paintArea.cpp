@@ -10,6 +10,7 @@ PaintArea::PaintArea(QWidget *parent) : QWidget(parent)
     actualPenWidth = 1;
     actualPenColor = Qt::black;
 
+    rubberSizeMultiplication = 3;
     initImage();
 
     paintActivate = true;
@@ -111,8 +112,10 @@ void PaintArea::paintObject(
 
     static QColor localPenColor;
     localPenColor = actualPenColor;
-    if(type == PaintType::rubber)
+    if(type == PaintType::rubber) {
         localPenColor = Qt::white;
+        localePenWidth *= rubberSizeMultiplication;
+    }
 
     paint.setPen(QPen(localPenColor, localePenWidth, actualPenStyle, Qt::RoundCap, Qt::RoundJoin));
     paint.setBrush(localPenColor);
@@ -192,7 +195,7 @@ void PaintArea::mousePressEvent(QMouseEvent *event)
     y = event->y();
 
     QPoint point(x, y);
-    if(actualPaintType == PaintType::curve){
+    if(actualPaintType == PaintType::pen){
         drawPoints.clear();
         drawPoints.append(point);
 
@@ -227,13 +230,15 @@ void PaintArea::mouseMoveEvent(QMouseEvent *event)
 
     paintObject(actualPaintType, x, y, event->x(), event->y());
 
+    const int rubberDiameter = actualPenWidth/2 * rubberSizeMultiplication;
+
     if(actualPaintType == PaintType::rubber) {
         imageBeforeMouseMoveEvent = image->copy();
         paintObject(PaintType::circle,
-                    event->x()-actualPenWidth/2,
-                    event->y()-actualPenWidth/2,
-                    event->x()+actualPenWidth/2,
-                    event->y()+actualPenWidth/2, 1);
+                    event->x() - rubberDiameter,
+                    event->y() - rubberDiameter,
+                    event->x() + rubberDiameter,
+                    event->y() + rubberDiameter, 1);
     }
 
 
