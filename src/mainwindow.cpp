@@ -401,6 +401,7 @@ void MainWindow::createToolBar()
 
     penButton = new QPushButton(tr("&Pen"));
     penButton->setCheckable(true);
+    penButton->setChecked(true);
     toolBarButtonGroup->
             addButton(penButton, static_cast<int>(PaintArea::PaintType::pen));
     leftToolBar->addWidget(penButton);

@@ -5,7 +5,7 @@ PaintArea::PaintArea(QWidget *parent) : QWidget(parent)
     //To allow paint events outside of paintEvent
     //setAttribute(Qt::WA_StaticContents);
 
-    actualPaintType = PaintType::line;
+    actualPaintType = PaintType::pen;
     actualPenStyle = Qt::SolidLine;
     actualPenWidth = 1;
     actualPenColor = Qt::black;
@@ -14,6 +14,8 @@ PaintArea::PaintArea(QWidget *parent) : QWidget(parent)
     initImage();
 
     paintActivate = true;
+
+
 }
 
 
