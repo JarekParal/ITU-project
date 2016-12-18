@@ -93,9 +93,9 @@ void PaintArea::paintObject(PaintType type, int x1, int y1, int x2, int y2) {
     QPainter paint;
     paintActivate = false;
     paint.begin(image);
-    paint.setPen(QColor(Qt::blue));
 
-    static QColor localPenColor = actualPenColor;
+    static QColor localPenColor;
+    localPenColor = actualPenColor;
     if(type == PaintType::rubber)
         localPenColor = Qt::white;
 
