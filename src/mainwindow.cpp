@@ -405,11 +405,11 @@ void MainWindow::createToolBar()
             addButton(penButton, static_cast<int>(PaintArea::PaintType::pen));
     leftToolBar->addWidget(penButton);
 
-    brushButton = new QPushButton(tr("&Brush"));
-    brushButton->setCheckable(true);
-    toolBarButtonGroup->
-            addButton(brushButton, static_cast<int>(PaintArea::PaintType::brush));
-    leftToolBar->addWidget(brushButton);
+//    brushButton = new QPushButton(tr("&Brush"));
+//    brushButton->setCheckable(true);
+//    toolBarButtonGroup->
+//            addButton(brushButton, static_cast<int>(PaintArea::PaintType::brush));
+//    leftToolBar->addWidget(brushButton);
 
 //    textButton = new QPushButton(tr("&Text"));
 //    textButton->setCheckable(true);
@@ -460,11 +460,11 @@ void MainWindow::createToolBar()
             addButton(ellipseSelBtn, static_cast<int>(PaintArea::PaintType::ellipse));
     leftToolBar->addWidget(ellipseSelBtn);
 
-    curveSelBtn = new QPushButton(tr("&Curve"));
-    curveSelBtn->setCheckable(true);
-    toolBarButtonGroup->
-            addButton(curveSelBtn, static_cast<int>(PaintArea::PaintType::curve));
-    leftToolBar->addWidget(curveSelBtn);
+//    curveSelBtn = new QPushButton(tr("&Curve"));
+//    curveSelBtn->setCheckable(true);
+//    toolBarButtonGroup->
+//            addButton(curveSelBtn, static_cast<int>(PaintArea::PaintType::curve));
+//    leftToolBar->addWidget(curveSelBtn);
 
     QList<QAbstractButton *> buttons = toolBarButtonGroup->buttons();
     foreach (QAbstractButton *button, buttons) {
