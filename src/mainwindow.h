@@ -13,6 +13,7 @@
 #include <QToolBar>
 #include <QToolButton>
 #include <QButtonGroup>
+#include <QColor>
 
 #include "paintArea.h"
 
@@ -41,25 +42,25 @@ private:
     QPushButton *setColorBtn;
     QPushButton *textBtn;
 
-    QToolBar * setWidthBar;
-
-    QButtonGroup *widthBarButtonGroup;
-    void createWidthBar();
-
     QToolBar * setStyleBar;
-
     QButtonGroup *styleBarButtonGroup;
     void createStyleBar();
 
-    QPushButton *style_SolidLine_Btn;
-    QPushButton *style_DashLine_Btn;
-    QPushButton *style_DotLine_Btn;
-    QPushButton *style_DashDotLine_Btn;
-    QPushButton *style_DashDotDotLine_Btn;
-    QPushButton *style_CustomDashLine_Btn;
+    QToolBar * setWidthBar;
+    QButtonGroup *widthBarButtonGroup;
+    void createWidthBar();
+
+    QToolBar * setColorBar;
+    QButtonGroup *colorBarButtonGroup;
+    void createColorBar();
+
+    QVector <QColor> defaultColor
+        = {Qt::white, Qt::black, Qt::red, Qt::green,
+           Qt::blue, Qt::cyan, Qt::magenta, Qt::yellow,
+           Qt::gray};
+
 
     QToolBar *leftToolBar;
-
     QButtonGroup *toolBarButtonGroup;
     void createToolBar();
 
@@ -85,6 +86,7 @@ public slots:
     void toolBarButtonGroupClicked(int id);
     void styleBarButtonGroupClicked(int id);
     void widthBarButtonGroupClicked(int id);
+    void colorBarButtonGroupClicked(int id);
 };
 
 #endif // MAINWINDOW_H

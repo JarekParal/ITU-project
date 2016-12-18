@@ -33,6 +33,7 @@ public:
     PaintType actualPaintType;
     Qt::PenStyle actualPenStyle;
     int actualPenWidth;
+    QColor actualPenColor;
 
 signals:
 

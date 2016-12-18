@@ -8,6 +8,7 @@ PaintArea::PaintArea(QWidget *parent) : QWidget(parent)
     actualPaintType = PaintType::line;
     actualPenStyle = Qt::SolidLine;
     actualPenWidth = 1;
+    actualPenColor = Qt::black;
 
     image = new QPixmap(400, 400);
     image->fill(Qt::white);
@@ -94,7 +95,7 @@ void PaintArea::paintObject(PaintType type, int x1, int y1, int x2, int y2) {
     paint.begin(image);
     paint.setPen(QColor(Qt::blue));
 
-    paint.setPen(QPen(Qt::green, actualPenWidth, actualPenStyle, Qt::RoundCap, Qt::RoundJoin));
+    paint.setPen(QPen(actualPenColor, actualPenWidth, actualPenStyle, Qt::RoundCap, Qt::RoundJoin));
 
     switch (type) {
         case PaintType::line:

@@ -18,11 +18,6 @@ MainWindow::MainWindow(QWidget *parent) :
     mainLayout->setColumnStretch(3, 1);
     mainLayout->addWidget(&scrollArea, 1, 1);
 
-    leftToolBar = new QToolBar;
-    leftToolBar->setOrientation(Qt::Vertical);
-    createToolBar();
-    mainLayout->addWidget(leftToolBar, 1, 0);
-
     setStyleBar = new QToolBar;
     setStyleBar->setOrientation(Qt::Vertical);
     createStyleBar();
@@ -33,9 +28,18 @@ MainWindow::MainWindow(QWidget *parent) :
     createWidthBar();
     mainLayout->addWidget(setWidthBar, 1, 3);
 
+    setColorBar = new QToolBar;
+    setColorBar->setOrientation(Qt::Vertical);
+    createColorBar();
+    mainLayout->addWidget(setColorBar, 1, 4);
+
+    leftToolBar = new QToolBar;
+    leftToolBar->setOrientation(Qt::Vertical);
+    createToolBar();
+    mainLayout->addWidget(leftToolBar, 1, 0);
+
     upToolBar = new QToolBar;
     mainLayout->addWidget(upToolBar, 0, 0, 1, 3);
-
 
     setLayout(mainLayout);
 }
@@ -45,15 +49,6 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::toolBarButtonGroupClicked(int id)
-{
-    qDebug() << "selectBtnSlot: " << static_cast<int>(id);
-
-    PaintArea::PaintType type = static_cast<PaintArea::PaintType>(id);
-    paintArea->actualPaintType=type;
-
-    setButtonGroupChecked(toolBarButtonGroup, id);
-}
 
 void MainWindow::styleBarButtonGroupClicked(int id)
 {
@@ -67,29 +62,36 @@ void MainWindow::widthBarButtonGroupClicked(int id)
 {
     paintArea->actualPenWidth = id;
 
-
     setButtonGroupChecked(widthBarButtonGroup, id);
 }
 
-void MainWindow::createWidthBar()
+void MainWindow::colorBarButtonGroupClicked(int id)
 {
-    widthBarButtonGroup = new QButtonGroup(this);
-    widthBarButtonGroup->setExclusive(false);
+//    qDebug() << "color - id: " << id << "  "
+//             << "string: " << QColor::colorNames().at(id);
 
-    connect(widthBarButtonGroup, SIGNAL(buttonClicked(int)),
-           this, SLOT(widthBarButtonGroupClicked(int)));
+//    for(auto color : QColor::colorNames()) {
+//        qDebug() << color;
+//    }
 
-    const int widthBtnCount = 20;
-    QPushButton *widthBtn[widthBtnCount];
-    for(int i = 1; i <= widthBtnCount; ++i) {
-        widthBtn[i-1] = new QPushButton(QString::number(i));
-        widthBtn[i-1]->setCheckable(true);
-        widthBarButtonGroup->
-                addButton(widthBtn[i-1], i);
-        setWidthBar->addWidget(widthBtn[i-1]);
-    }
+//    foreach (QString name, QColor::colorNames())
+//       qDebug() << name;
+
+    QColor type = defaultColor.at(id);
+    paintArea->actualPenColor = type;
+
+    setButtonGroupChecked(colorBarButtonGroup, id);
 }
 
+void MainWindow::toolBarButtonGroupClicked(int id)
+{
+    qDebug() << "selectBtnSlot: " << static_cast<int>(id);
+
+    PaintArea::PaintType type = static_cast<PaintArea::PaintType>(id);
+    paintArea->actualPaintType=type;
+
+    setButtonGroupChecked(toolBarButtonGroup, id);
+}
 
 void MainWindow::createStyleBar()
 {
@@ -134,6 +136,62 @@ void MainWindow::createStyleBar()
 //    styleBarButtonGroup->
 //            addButton(style_CustomDashLine_Btn, static_cast<int>(Qt::CustomDashLine));
 //    setStylelBar->addWidget(style_CustomDashLine_Btn);
+}
+
+void MainWindow::createWidthBar()
+{
+    widthBarButtonGroup = new QButtonGroup(this);
+    widthBarButtonGroup->setExclusive(false);
+
+    connect(widthBarButtonGroup, SIGNAL(buttonClicked(int)),
+           this, SLOT(widthBarButtonGroupClicked(int)));
+
+    const int widthBtnCount = 20;
+    QPushButton *widthBtn[widthBtnCount];
+    const int startingWidth = 1;
+    int arrayPos = startingWidth;
+
+    for(int i = startingWidth; i <= widthBtnCount; ++i) {
+        arrayPos = i - startingWidth;
+        widthBtn[arrayPos] = new QPushButton(QString::number(i));
+        widthBtn[arrayPos]->setCheckable(true);
+        widthBarButtonGroup->
+                addButton(widthBtn[arrayPos], i);
+        setWidthBar->addWidget(widthBtn[arrayPos]);
+    }
+}
+
+void MainWindow::createColorBar()
+{
+    colorBarButtonGroup = new QButtonGroup(this);
+    colorBarButtonGroup->setExclusive(false);
+
+    connect(colorBarButtonGroup, SIGNAL(buttonClicked(int)),
+           this, SLOT(colorBarButtonGroupClicked(int)));
+
+    const int colorBtnCount = defaultColor.size();
+    QToolButton *colorBtn[colorBtnCount];
+    const int startingColor = 0;
+    int arrayPos = startingColor;
+
+    for(int i = startingColor; i < colorBtnCount; ++i) {
+        arrayPos = i - startingColor;
+
+        colorBtn[arrayPos] = new QToolButton();
+        colorBtn[arrayPos]->setCheckable(true);
+
+//        colorBtn[arrayPos]->setPalette(QPalette(defaultColor.at(i)));
+//        colorBtn[arrayPos]->setAutoFillBackground(true);
+
+        QPixmap buttonIcon = QPixmap(40, 40);
+        buttonIcon.fill(defaultColor.at(i));
+        colorBtn[arrayPos]->setIcon(buttonIcon);
+        colorBtn[arrayPos]->setIconSize(buttonIcon.size());
+
+        colorBarButtonGroup->
+                addButton(colorBtn[arrayPos], i);
+        setColorBar->addWidget(colorBtn[arrayPos]);
+    }
 }
 
 
