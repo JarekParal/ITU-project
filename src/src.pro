@@ -20,3 +20,6 @@ HEADERS  += mainwindow.h \
     paintArea.h
 
 FORMS    += mainwindow.ui
+
+RESOURCES += \
+    icon.qrc

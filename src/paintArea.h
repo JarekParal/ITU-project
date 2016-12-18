@@ -29,7 +29,7 @@ public:
     QSize sizeHint() const Q_DECL_OVERRIDE;
 
     enum class PaintType { line, rect, circle, curve, ellipse, pen, brush, text, rubber, dropper, can};
-    void paintObject(PaintType type, int x1, int y1, int x2, int y2);
+    void paintObject(PaintType type, int x1, int y1, int x2, int y2, int penWidth = -1);
     PaintType actualPaintType;
     Qt::PenStyle actualPenStyle;
     int actualPenWidth;
@@ -38,6 +38,7 @@ public:
 signals:
 
 public slots:
+    void initImage();
     void loadFromFile();
     void saveToFile();
 
@@ -55,7 +56,7 @@ private:
     QPixmap *image;
 
     QVector <QPoint> curvePoints;
-    QPolygon curvePolygon;
+    QPolygon drawPoints;
 
     int paintActivate;
 };

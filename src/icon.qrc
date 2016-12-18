@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/icon">
+        <file>resource/qpen-dash.png</file>
+        <file>resource/qpen-custom.png</file>
+        <file>resource/qpen-dashdot.png</file>
+        <file>resource/qpen-dashdotdot.png</file>
+        <file>resource/qpen-dot.png</file>
+        <file alias="resource/qpen-solid.png">resource/qpen-solid.png</file>
+    </qresource>
+</RCC>

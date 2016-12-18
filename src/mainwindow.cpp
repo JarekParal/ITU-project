@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 
 #include <QGridLayout>
+#include <QResource>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent), ui(new Ui::MainWindow)
@@ -9,6 +10,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     QGuiApplication::setApplicationDisplayName("ITU-project Paint");
+
+    QResource::registerResource("icon.qrc");
+
+    //Q_INIT_RESOURCE(resources);
 
     paintArea = new PaintArea;
     scrollArea.setWidget(paintArea);
@@ -168,6 +173,25 @@ void MainWindow::createUpToolBar()
     const int upToolBarButtonSizeX = 100;
     const int upToolBarButtonSizeY = 60;
 
+    const int btnIconSizeX = 60;
+    const int btnIconSizeY = 50;
+    const int btnIconSizeStartEndX = 5;
+
+    QPixmap buttonIcon = QPixmap(btnIconSizeX, btnIconSizeY);
+    buttonIcon.fill(Qt::white);
+
+    QPainter paint;
+    paint.begin(&buttonIcon);
+    paint.setPen(QPen(Qt::black, 5));
+    paint.drawLine(btnIconSizeStartEndX, btnIconSizeY/2,
+                   btnIconSizeX - btnIconSizeStartEndX, btnIconSizeY/2);
+    paint.end();
+
+    QPushButton * newButton = new QPushButton(tr("&New"));
+    newButton->setToolTip(tr("New picture"));
+    upToolBar->addWidget(newButton);
+    connect(newButton, SIGNAL(clicked()), paintArea, SLOT(initImage()));
+    newButton->setMinimumSize(upToolBarButtonSizeX,upToolBarButtonSizeY);
 
     loadButton = new QPushButton(tr("&Load"));
     loadButton->setToolTip(tr("Load picture from a file"));
@@ -185,6 +209,8 @@ void MainWindow::createUpToolBar()
 
     QPushButton *setStyleBtn = new QPushButton(tr("&Style"));
     setStyleBtn->setCheckable(true);
+    setStyleBtn->setIcon(QIcon(":/icon/resource/qpen-solid.png"));
+    setStyleBtn->setIconSize(QSize(60,40));
     upToolBarButtonGroup->
             addButton(setStyleBtn, static_cast<int>(SettingBar::style));
     upToolBar->addWidget(setStyleBtn);
@@ -197,12 +223,29 @@ void MainWindow::createUpToolBar()
 
     QPushButton *setWidthBtn = new QPushButton(tr("&Width"));
     setWidthBtn->setCheckable(true);
+    setWidthBtn->setIcon(buttonIcon);
+    setWidthBtn->setIconSize(buttonIcon.size());
     upToolBarButtonGroup->
             addButton(setWidthBtn, static_cast<int>(SettingBar::width));
     upToolBar->addWidget(setWidthBtn);
 
+    buttonIcon.fill(Qt::white);
+    paint.begin(&buttonIcon);
+    paint.setPen(QPen(Qt::red, 5));
+    paint.setBrush(Qt::red);
+    paint.drawRect(0, 0, btnIconSizeX/2, btnIconSizeY/2);
+    paint.setPen(QPen(Qt::blue, 5));
+    paint.setBrush(Qt::blue);
+    paint.drawRect(btnIconSizeX/2, btnIconSizeY/2, btnIconSizeX, btnIconSizeY);
+    paint.setPen(QPen(Qt::green, 5));
+    paint.setBrush(Qt::green);
+    paint.drawRect(0, btnIconSizeY/2, btnIconSizeX/2, btnIconSizeY);
+    paint.end();
+
     QPushButton *setColorBtn = new QPushButton(tr("&Color"));
     setColorBtn->setCheckable(true);
+    setColorBtn->setIcon(buttonIcon);
+    setColorBtn->setIconSize(buttonIcon.size());
     upToolBarButtonGroup->
             addButton(setColorBtn, static_cast<int>(SettingBar::color));
     upToolBar->addWidget(setColorBtn);
@@ -224,36 +267,42 @@ void MainWindow::createStyleBar()
 
     QPushButton *style_SolidLine_Btn = new QPushButton(tr("&SolidLine"));
     style_SolidLine_Btn->setCheckable(true);
+    style_SolidLine_Btn->setIcon(QIcon(":/icon/resource/qpen-solid.png"));
     styleBarButtonGroup->
             addButton(style_SolidLine_Btn, static_cast<int>(Qt::SolidLine));
     setStyleBar->addWidget(style_SolidLine_Btn);
 
     QPushButton *style_DashLine_Btn = new QPushButton(tr("&DashLine"));
     style_DashLine_Btn->setCheckable(true);
+    style_DashLine_Btn->setIcon(QIcon(":/icon/resource/qpen-dash.png"));
     styleBarButtonGroup->
             addButton(style_DashLine_Btn, static_cast<int>(Qt::DashLine));
     setStyleBar->addWidget(style_DashLine_Btn);
 
     QPushButton *style_DotLine_Btn = new QPushButton(tr("&DotLine"));
     style_DotLine_Btn->setCheckable(true);
+    style_DotLine_Btn->setIcon(QIcon(":/icon/resource/qpen-dot.png"));
     styleBarButtonGroup->
             addButton(style_DotLine_Btn, static_cast<int>(Qt::DotLine));
     setStyleBar->addWidget(style_DotLine_Btn);
 
     QPushButton *style_DashDotLine_Btn = new QPushButton(tr("&DashDotLine"));
     style_DashDotLine_Btn->setCheckable(true);
+    style_DashDotLine_Btn->setIcon(QIcon(":/icon/resource/qpen-dashdot.png"));
     styleBarButtonGroup->
             addButton(style_DashDotLine_Btn, static_cast<int>(Qt::DashDotLine));
     setStyleBar->addWidget(style_DashDotLine_Btn);
 
     QPushButton *style_DashDotDotLine_Btn = new QPushButton(tr("&DashDotDotLine"));
     style_DashDotDotLine_Btn->setCheckable(true);
+    style_DashDotDotLine_Btn->setIcon(QIcon(":/icon/resource/qpen-dashdotdot.png"));
     styleBarButtonGroup->
             addButton(style_DashDotDotLine_Btn, static_cast<int>(Qt::DashDotDotLine));
     setStyleBar->addWidget(style_DashDotDotLine_Btn);
 
 //    QPushButton *style_CustomDashLine_Btn = new QPushButton(tr("&CustomDashLine"));
 //    style_CustomDashLine_Btn->setCheckable(true);
+ //   style_CustomDashLine_Btn->setIcon(QIcon(":/icon/resource/qpen-custom.png"));
 //    styleBarButtonGroup->
 //            addButton(style_CustomDashLine_Btn, static_cast<int>(Qt::CustomDashLine));
 //    setStylelBar->addWidget(style_CustomDashLine_Btn);
@@ -261,6 +310,8 @@ void MainWindow::createStyleBar()
     QList<QAbstractButton *> buttons = styleBarButtonGroup->buttons();
     foreach (QAbstractButton *button, buttons) {
         button->setMinimumSize(100,100);
+        button->setIconSize(QSize(80,80));
+        button->setText("");
     }
 }
 
