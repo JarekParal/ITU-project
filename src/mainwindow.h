@@ -49,7 +49,11 @@ private:
     QPushButton *width_7_Btn;
     QPushButton *width_8_Btn;
 
-    QToolBar * setStyleToolBar;
+    QToolBar * setStylelBar;
+
+    QButtonGroup *styleBarButtonGroup;
+    void createStylesBar();
+
     QPushButton *style_SolidLine_Btn;
     QPushButton *style_DashLine_Btn;
     QPushButton *style_DotLine_Btn;
@@ -58,6 +62,10 @@ private:
     QPushButton *style_CustomDashLine_Btn;
 
     QToolBar *leftToolBar;
+
+    QButtonGroup *toolBarButtonGroup;
+    void createToolBar();
+
     QPushButton *loadButton;
     QPushButton *saveButton;
     QPushButton *penButton;
@@ -73,12 +81,12 @@ private:
     QPushButton *ellipseSelBtn;
     QPushButton *curveSelBtn;
 
-    QButtonGroup *toolsBoxButtonGroup;
+    void setButtonGroupChecked(QButtonGroup * buttonGroup, int id);
 
-    void createToolsBox();
 
 public slots:
-    void toolsBoxButtonGroupClicked(int id);
+    void toolBarButtonGroupClicked(int id);
+    void styleBarButtonGroupClicked(int id);
 };
 
 #endif // MAINWINDOW_H
