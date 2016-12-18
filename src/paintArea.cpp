@@ -10,12 +10,6 @@ PaintArea::PaintArea(QWidget *parent) : QWidget(parent)
     image = new QPixmap(800, 800);
     image->fill(Qt::white);
 
-    QPainter paint;
-    paint.begin(image);
-    paint.setPen(QColor(Qt::blue));
-    paint.drawLine(0,0,100,100);
-    paint.end();
-
     paintActivate = true;
 }
 
@@ -36,25 +30,13 @@ void PaintArea::paintEvent(QPaintEvent * event)
         QRect rec = event->rect();
         painter.drawPixmap(rec, *image, rec);
     }
-
-//    paint.drawPixmap(0,0,pixmap);
-
-//    paint.setPen(QColor(Qt::blue));
-//    paint.drawLine(0,0,100,100);
-
-//    QBrush fillBrush;
-//    fillBrush.setColor(Qt::red);
-//    fillBrush.setStyle(Qt::SolidPattern);
-
-//    //paint.fillPath(painterPath, fillBrush);
-//    paint.drawPath(painterPath);
 }
 
 void PaintArea::loadFromFile()
 {
     // source: http://doc.qt.io/qt-5/qtwidgets-tutorials-addressbook-part6-example.html
     QString fileName = QFileDialog::getOpenFileName(this,
-        tr("Load pictures"), "",
+        tr("Load picture"), "",
         tr("PNG (*.png);;JPG (*.jpg *.jpeg);;All Files (*)"));
 
     if (fileName.isEmpty()){
@@ -83,7 +65,7 @@ void PaintArea::loadFromFile()
 void PaintArea::saveToFile()
 {
     QString fileName = QFileDialog::getSaveFileName(this,
-        tr("Load pictures"), "",
+        tr("Save picture"), "",
         tr("PNG (*.png);;JPG (*.jpg *.jpeg);;All Files (*)"));
 
     if (fileName.isEmpty()){

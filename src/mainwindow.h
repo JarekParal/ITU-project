@@ -73,13 +73,12 @@ private:
     QPushButton *ellipseSelBtn;
     QPushButton *curveSelBtn;
 
-    QButtonGroup *settingToolBoxButtonGroup;
+    QButtonGroup *toolsBoxButtonGroup;
 
-    void createSettingToolBox();
+    void createToolsBox();
 
 public slots:
-    void selectBtnSlot(PaintArea::PaintType type);
-    void buttonGroupClicked(int id);
+    void toolsBoxButtonGroupClicked(int id);
 };
 
 #endif // MAINWINDOW_H

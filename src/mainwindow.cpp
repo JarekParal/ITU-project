@@ -8,6 +8,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     //ui->setupUi(this);
 
+    QGuiApplication::setApplicationDisplayName("ITU-project Paint");
+
     paintArea = new PaintArea;
 
     QGridLayout *mainLayout = new QGridLayout;
@@ -22,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     mainLayout->addWidget(upToolBar, 0, 0, 1, 3);
 
-    createSettingToolBox();
+    createToolsBox();
     mainLayout->addWidget(leftToolBar, 1, 0);
 
     setLayout(mainLayout);
@@ -33,29 +35,29 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::buttonGroupClicked(int id)
+void MainWindow::toolsBoxButtonGroupClicked(int id)
 {
     qDebug() << "selectBtnSlot: " << static_cast<int>(id);
 
     PaintArea::PaintType type = static_cast<PaintArea::PaintType>(id);
     paintArea->actualPaintType=type;
 
-    QList<QAbstractButton *> buttons = settingToolBoxButtonGroup->buttons();
+    QList<QAbstractButton *> buttons = toolsBoxButtonGroup->buttons();
     foreach (QAbstractButton *button, buttons) {
-        if (settingToolBoxButtonGroup->button(id) != button)
+        if (toolsBoxButtonGroup->button(id) != button)
             button->setChecked(false);
         else
             button->setChecked(true);
     }
 }
 
-void MainWindow::createSettingToolBox()
+void MainWindow::createToolsBox()
 {
-    settingToolBoxButtonGroup = new QButtonGroup(this);
-    settingToolBoxButtonGroup->setExclusive(false);
+    toolsBoxButtonGroup = new QButtonGroup(this);
+    toolsBoxButtonGroup->setExclusive(false);
 
-    connect(settingToolBoxButtonGroup, SIGNAL(buttonClicked(int)),
-           this, SLOT(buttonGroupClicked(int)));
+    connect(toolsBoxButtonGroup, SIGNAL(buttonClicked(int)),
+           this, SLOT(toolsBoxButtonGroupClicked(int)));
 
     loadButton = new QPushButton(tr("&Load"));
     loadButton->setToolTip(tr("Load picture from a file"));
@@ -71,83 +73,70 @@ void MainWindow::createSettingToolBox()
 
     penButton = new QPushButton(tr("&Pen"));
     penButton->setCheckable(true);
-    settingToolBoxButtonGroup->
+    toolsBoxButtonGroup->
             addButton(penButton, static_cast<int>(PaintArea::PaintType::pen));
     leftToolBar->addWidget(penButton);
 
     brushButton = new QPushButton(tr("&Brush"));
     brushButton->setCheckable(true);
-    settingToolBoxButtonGroup->
+    toolsBoxButtonGroup->
             addButton(brushButton, static_cast<int>(PaintArea::PaintType::brush));
     leftToolBar->addWidget(brushButton);
 
     textButton = new QPushButton(tr("&Text"));
     textButton->setCheckable(true);
-    settingToolBoxButtonGroup->
+    toolsBoxButtonGroup->
             addButton(textButton, static_cast<int>(PaintArea::PaintType::text));
     leftToolBar->addWidget(textButton);
 
     rubberButton = new QPushButton(tr("&Rubber"));
     rubberButton->setCheckable(true);
-    settingToolBoxButtonGroup->
+    toolsBoxButtonGroup->
             addButton(rubberButton, static_cast<int>(PaintArea::PaintType::rubber));
     leftToolBar->addWidget(rubberButton);
 
     dropperButton = new QPushButton(tr("&Dropper"));
     dropperButton->setCheckable(true);
-    settingToolBoxButtonGroup->
+    toolsBoxButtonGroup->
             addButton(dropperButton, static_cast<int>(PaintArea::PaintType::dropper));
     leftToolBar->addWidget(dropperButton);
 
     canButton = new QPushButton(tr("&Can"));
     canButton->setCheckable(true);
-    settingToolBoxButtonGroup->
+    toolsBoxButtonGroup->
             addButton(canButton, static_cast<int>(PaintArea::PaintType::can));
     leftToolBar->addWidget(canButton);
 
     lineSelBtn = new QPushButton(tr("&Line"));
     lineSelBtn->setCheckable(true);
     lineSelBtn->setIconSize(QSize(50,50));
-    settingToolBoxButtonGroup->
+    toolsBoxButtonGroup->
             addButton(lineSelBtn, static_cast<int>(PaintArea::PaintType::line));
     leftToolBar->addWidget(lineSelBtn);
 
     circleSelBtn = new QPushButton(tr("&Circle"));
     circleSelBtn->setCheckable(true);
-    settingToolBoxButtonGroup->
+    toolsBoxButtonGroup->
             addButton(circleSelBtn, static_cast<int>(PaintArea::PaintType::circle));
     leftToolBar->addWidget(circleSelBtn);
 
     rectSelBtn = new QPushButton(tr("&Rect"));
     rectSelBtn->setCheckable(true);
-    settingToolBoxButtonGroup->
+    toolsBoxButtonGroup->
             addButton(rectSelBtn, static_cast<int>(PaintArea::PaintType::rect));
     leftToolBar->addWidget(rectSelBtn);
 
     ellipseSelBtn = new QPushButton(tr("&Ellipse"));
     ellipseSelBtn->setCheckable(true);
-    settingToolBoxButtonGroup->
+    toolsBoxButtonGroup->
             addButton(ellipseSelBtn, static_cast<int>(PaintArea::PaintType::ellipse));
     leftToolBar->addWidget(ellipseSelBtn);
 
     curveSelBtn = new QPushButton(tr("&Curve"));
     curveSelBtn->setCheckable(true);
-    settingToolBoxButtonGroup->
+    toolsBoxButtonGroup->
             addButton(curveSelBtn, static_cast<int>(PaintArea::PaintType::curve));
     leftToolBar->addWidget(curveSelBtn);
-}
-
-
-
-void MainWindow::selectBtnSlot(PaintArea::PaintType type)
-{
-    qDebug() << "selectBtnSlot: " << static_cast<int>(type);
-
-    if(type == PaintArea::PaintType::line)
-    {
-        lineSelBtn->setChecked(true);
-        paintArea->actualPaintType=PaintArea::PaintType::line;
-    }
 }
 
 //void MainWindow::keyPressEvent(QKeyEvent *event)
