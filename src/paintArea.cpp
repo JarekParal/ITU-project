@@ -95,7 +95,18 @@ void PaintArea::paintObject(PaintType type, int x1, int y1, int x2, int y2) {
     paint.begin(image);
     paint.setPen(QColor(Qt::blue));
 
-    paint.setPen(QPen(actualPenColor, actualPenWidth, actualPenStyle, Qt::RoundCap, Qt::RoundJoin));
+    static QColor localPenColor = actualPenColor;
+    if(type == PaintType::rubber)
+        localPenColor = Qt::white;
+
+    paint.setPen(QPen(localPenColor, actualPenWidth, actualPenStyle, Qt::RoundCap, Qt::RoundJoin));
+
+    // drawCircle
+    static int x_y = 0;
+    static int xDelta = 0;
+    static int yDelta = 0;
+    static int xSign = 1;
+    static int ySign = 1;
 
     switch (type) {
         case PaintType::line:
@@ -104,8 +115,15 @@ void PaintArea::paintObject(PaintType type, int x1, int y1, int x2, int y2) {
             break;
 
         case PaintType::circle:
-            paint.drawEllipse(x1,y1,x2-x1,y2-y1); //TODO
-            qDebug() << "drawEllipse";
+            xDelta = x2-x1;
+            yDelta = y2-y1;
+            x_y = qMin(qAbs(xDelta), qAbs(yDelta));
+
+            xSign = (xDelta < 0) ? -1 : 1;
+            ySign = (yDelta < 0) ? -1 : 1;
+
+            paint.drawEllipse(x1, y1, x_y*xSign, x_y*ySign);
+            qDebug() << "drawCircle";
             break;
 
         case PaintType::rect:
@@ -119,8 +137,8 @@ void PaintArea::paintObject(PaintType type, int x1, int y1, int x2, int y2) {
             break;
 
         case PaintType::curve:
-            paint.drawLine(x1,y1,x2,y2); //TODO
-            qDebug() << "drawLine";
+            paint.drawPolygon(curvePolygon); // TODO
+            qDebug() << "drawPolygon";
             break;
 
         case PaintType::pen:
@@ -134,7 +152,7 @@ void PaintArea::paintObject(PaintType type, int x1, int y1, int x2, int y2) {
             break;
 
         case PaintType::rubber:
-            paint.drawLine(x1,y1,x2,y2); //TODO
+            paint.drawPoint(x2,y2);
             qDebug() << "drawRubber";
             break;
 
@@ -157,6 +175,15 @@ void PaintArea::mousePressEvent(QMouseEvent *event)
     x = event->x();
     y = event->y();
 
+    QPoint point(x, y);
+    if(actualPaintType == PaintType::curve){
+        curvePolygon.clear();
+        curvePolygon.append(point);
+
+        curvePoints.clear();
+        curvePoints.append(point);
+    }
+
     this->update();
 }
 
@@ -168,6 +195,8 @@ void PaintArea::mouseReleaseEvent(QMouseEvent *event)
 
 void PaintArea::mouseMoveEvent(QMouseEvent *event)
 {
+    QPoint point(event->x(), event->y());
+
     if(actualPaintType != PaintType::pen &&
        actualPaintType != PaintType::rubber &&
        actualPaintType != PaintType::brush)
@@ -175,6 +204,12 @@ void PaintArea::mouseMoveEvent(QMouseEvent *event)
         delete image;
         image = new QPixmap(imageBeforeMouseMoveEvent);
     }
+
+    if(actualPaintType == PaintType::curve){
+        curvePolygon.append(point);
+        curvePoints.append(point);
+    }
+
     paintObject(actualPaintType, x, y, event->x(), event->y());
     this->update();
 }

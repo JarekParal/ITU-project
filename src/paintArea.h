@@ -54,6 +54,9 @@ private:
     QPixmap imageBeforeMouseMoveEvent;
     QPixmap *image;
 
+    QVector <QPoint> curvePoints;
+    QPolygon curvePolygon;
+
     int paintActivate;
 };
 
