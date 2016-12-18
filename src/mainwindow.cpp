@@ -165,6 +165,18 @@ void MainWindow::createUpToolBar()
     connect(upToolBarButtonGroup, SIGNAL(buttonClicked(int)),
            this, SLOT(upToolBarButtonGroupClicked(int)));
 
+    loadButton = new QPushButton(tr("&Load"));
+    loadButton->setToolTip(tr("Load picture from a file"));
+    upToolBar->addWidget(loadButton);
+    connect(loadButton, SIGNAL(clicked()), paintArea, SLOT(
+                loadFromFile()));
+
+    saveButton = new QPushButton(tr("&Save"));
+    saveButton->setToolTip(tr("Save picture to a file"));
+    upToolBar->addWidget(saveButton);
+    connect(saveButton, SIGNAL(clicked()), paintArea, SLOT(
+                saveToFile()));
+
     QPushButton *setStyleBtn = new QPushButton(tr("&Style"));
     setStyleBtn->setCheckable(true);
     upToolBarButtonGroup->
@@ -304,18 +316,6 @@ void MainWindow::createToolBar()
 
     connect(toolBarButtonGroup, SIGNAL(buttonClicked(int)),
            this, SLOT(toolBarButtonGroupClicked(int)));
-
-    loadButton = new QPushButton(tr("&Load"));
-    loadButton->setToolTip(tr("Load picture from a file"));
-    leftToolBar->addWidget(loadButton);
-    connect(loadButton, SIGNAL(clicked()), paintArea, SLOT(
-                loadFromFile()));
-
-    saveButton = new QPushButton(tr("&Save"));
-    saveButton->setToolTip(tr("Save picture to a file"));
-    leftToolBar->addWidget(saveButton);
-    connect(saveButton, SIGNAL(clicked()), paintArea, SLOT(
-                saveToFile()));
 
     penButton = new QPushButton(tr("&Pen"));
     penButton->setCheckable(true);
