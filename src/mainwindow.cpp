@@ -165,17 +165,23 @@ void MainWindow::createUpToolBar()
     connect(upToolBarButtonGroup, SIGNAL(buttonClicked(int)),
            this, SLOT(upToolBarButtonGroupClicked(int)));
 
+    const int upToolBarButtonSizeX = 100;
+    const int upToolBarButtonSizeY = 60;
+
+
     loadButton = new QPushButton(tr("&Load"));
     loadButton->setToolTip(tr("Load picture from a file"));
     upToolBar->addWidget(loadButton);
     connect(loadButton, SIGNAL(clicked()), paintArea, SLOT(
                 loadFromFile()));
+    loadButton->setMinimumSize(upToolBarButtonSizeX,upToolBarButtonSizeY);
 
     saveButton = new QPushButton(tr("&Save"));
     saveButton->setToolTip(tr("Save picture to a file"));
     upToolBar->addWidget(saveButton);
     connect(saveButton, SIGNAL(clicked()), paintArea, SLOT(
                 saveToFile()));
+    saveButton->setMinimumSize(upToolBarButtonSizeX,upToolBarButtonSizeY);
 
     QPushButton *setStyleBtn = new QPushButton(tr("&Style"));
     setStyleBtn->setCheckable(true);
@@ -204,6 +210,7 @@ void MainWindow::createUpToolBar()
     QList<QAbstractButton *> buttons = upToolBarButtonGroup->buttons();
     foreach (QAbstractButton *button, buttons) {
         button->setChecked(true);
+        button->setMinimumSize(upToolBarButtonSizeX,upToolBarButtonSizeY);
     }
 }
 
@@ -250,6 +257,11 @@ void MainWindow::createStyleBar()
 //    styleBarButtonGroup->
 //            addButton(style_CustomDashLine_Btn, static_cast<int>(Qt::CustomDashLine));
 //    setStylelBar->addWidget(style_CustomDashLine_Btn);
+
+    QList<QAbstractButton *> buttons = styleBarButtonGroup->buttons();
+    foreach (QAbstractButton *button, buttons) {
+        button->setMinimumSize(100,100);
+    }
 }
 
 void MainWindow::createWidthBar()
@@ -269,6 +281,24 @@ void MainWindow::createWidthBar()
         arrayPos = i - startingWidth;
         widthBtn[arrayPos] = new QPushButton(QString::number(i));
         widthBtn[arrayPos]->setCheckable(true);
+
+        const int btnIconSizeX = 40;
+        const int btnIconSizeY = 40;
+        const int btnIconSizeStartEndX = 5;
+
+        QPixmap buttonIcon = QPixmap(btnIconSizeX, btnIconSizeY);
+        buttonIcon.fill(Qt::white);
+
+        QPainter paint;
+        paint.begin(&buttonIcon);
+        paint.setPen(QPen(Qt::black, i));
+        paint.drawLine(btnIconSizeStartEndX, btnIconSizeY/2,
+                       btnIconSizeX - btnIconSizeStartEndX, btnIconSizeY/2);
+        paint.end();
+
+        widthBtn[arrayPos]->setIcon(buttonIcon);
+        widthBtn[arrayPos]->setIconSize(buttonIcon.size());
+
         widthBarButtonGroup->
                 addButton(widthBtn[arrayPos], i);
         setWidthBar->addWidget(widthBtn[arrayPos]);
@@ -297,7 +327,8 @@ void MainWindow::createColorBar()
 //        colorBtn[arrayPos]->setPalette(QPalette(defaultColor.at(i)));
 //        colorBtn[arrayPos]->setAutoFillBackground(true);
 
-        QPixmap buttonIcon = QPixmap(40, 40);
+        colorBtn[arrayPos]->setMinimumSize(60,60);
+        QPixmap buttonIcon = QPixmap(80, 80);
         buttonIcon.fill(defaultColor.at(i));
         colorBtn[arrayPos]->setIcon(buttonIcon);
         colorBtn[arrayPos]->setIconSize(buttonIcon.size());
@@ -329,11 +360,11 @@ void MainWindow::createToolBar()
             addButton(brushButton, static_cast<int>(PaintArea::PaintType::brush));
     leftToolBar->addWidget(brushButton);
 
-    textButton = new QPushButton(tr("&Text"));
-    textButton->setCheckable(true);
-    toolBarButtonGroup->
-            addButton(textButton, static_cast<int>(PaintArea::PaintType::text));
-    leftToolBar->addWidget(textButton);
+//    textButton = new QPushButton(tr("&Text"));
+//    textButton->setCheckable(true);
+//    toolBarButtonGroup->
+//            addButton(textButton, static_cast<int>(PaintArea::PaintType::text));
+//    leftToolBar->addWidget(textButton);
 
     rubberButton = new QPushButton(tr("&Rubber"));
     rubberButton->setCheckable(true);
@@ -341,17 +372,17 @@ void MainWindow::createToolBar()
             addButton(rubberButton, static_cast<int>(PaintArea::PaintType::rubber));
     leftToolBar->addWidget(rubberButton);
 
-    dropperButton = new QPushButton(tr("&Dropper"));
-    dropperButton->setCheckable(true);
-    toolBarButtonGroup->
-            addButton(dropperButton, static_cast<int>(PaintArea::PaintType::dropper));
-    leftToolBar->addWidget(dropperButton);
+//    dropperButton = new QPushButton(tr("&Dropper"));
+//    dropperButton->setCheckable(true);
+//    toolBarButtonGroup->
+//            addButton(dropperButton, static_cast<int>(PaintArea::PaintType::dropper));
+//    leftToolBar->addWidget(dropperButton);
 
-    canButton = new QPushButton(tr("&Can"));
-    canButton->setCheckable(true);
-    toolBarButtonGroup->
-            addButton(canButton, static_cast<int>(PaintArea::PaintType::can));
-    leftToolBar->addWidget(canButton);
+//    canButton = new QPushButton(tr("&Can"));
+//    canButton->setCheckable(true);
+//    toolBarButtonGroup->
+//            addButton(canButton, static_cast<int>(PaintArea::PaintType::can));
+//    leftToolBar->addWidget(canButton);
 
     lineSelBtn = new QPushButton(tr("&Line"));
     lineSelBtn->setCheckable(true);
@@ -383,6 +414,11 @@ void MainWindow::createToolBar()
     toolBarButtonGroup->
             addButton(curveSelBtn, static_cast<int>(PaintArea::PaintType::curve));
     leftToolBar->addWidget(curveSelBtn);
+
+    QList<QAbstractButton *> buttons = toolBarButtonGroup->buttons();
+    foreach (QAbstractButton *button, buttons) {
+        button->setMinimumSize(100,100);
+    }
 }
 
 void MainWindow::setButtonGroupChecked(QButtonGroup *buttonGroup, int id)
