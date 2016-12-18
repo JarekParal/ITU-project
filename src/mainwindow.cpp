@@ -78,10 +78,29 @@ void MainWindow::createStyleBar()
             addButton(style_DashLine_Btn, static_cast<int>(Qt::DashLine));
     setStylelBar->addWidget(style_DashLine_Btn);
 
-    QPushButton *style_DotLine_Btn = new QPushButton(tr("&Load"));
-    QPushButton *style_DashDotLine_Btn = new QPushButton(tr("&Load"));
-    QPushButton *style_DashDotDotLine_Btn = new QPushButton(tr("&Load"));
-    QPushButton *style_CustomDashLine_Btn = new QPushButton(tr("&Load"));
+    QPushButton *style_DotLine_Btn = new QPushButton(tr("&DotLine"));
+    style_DotLine_Btn->setCheckable(true);
+    styleBarButtonGroup->
+            addButton(style_DotLine_Btn, static_cast<int>(Qt::DotLine));
+    setStylelBar->addWidget(style_DotLine_Btn);
+
+    QPushButton *style_DashDotLine_Btn = new QPushButton(tr("&DashDotLine"));
+    style_DashDotLine_Btn->setCheckable(true);
+    styleBarButtonGroup->
+            addButton(style_DashDotLine_Btn, static_cast<int>(Qt::DashDotLine));
+    setStylelBar->addWidget(style_DashDotLine_Btn);
+
+    QPushButton *style_DashDotDotLine_Btn = new QPushButton(tr("&DashDotDotLine"));
+    style_DashDotDotLine_Btn->setCheckable(true);
+    styleBarButtonGroup->
+            addButton(style_DashDotDotLine_Btn, static_cast<int>(Qt::DashDotDotLine));
+    setStylelBar->addWidget(style_DashDotDotLine_Btn);
+
+//    QPushButton *style_CustomDashLine_Btn = new QPushButton(tr("&CustomDashLine"));
+//    style_CustomDashLine_Btn->setCheckable(true);
+//    styleBarButtonGroup->
+//            addButton(style_CustomDashLine_Btn, static_cast<int>(Qt::CustomDashLine));
+//    setStylelBar->addWidget(style_CustomDashLine_Btn);
 }
 
 
