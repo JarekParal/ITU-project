@@ -217,17 +217,13 @@ void PaintArea::mouseMoveEvent(QMouseEvent *event)
 {
     QPoint point(event->x(), event->y());
 
-    if(actualPaintType == PaintType::curve){
+    if(actualPaintType == PaintType::pen){
         drawPoints.append(point);
         curvePoints.append(point);
     }
 
-    if(actualPaintType != PaintType::pen &&
-       actualPaintType != PaintType::brush)
-    {
-        delete image;
-        image = new QPixmap(imageBeforeMouseMoveEvent);
-    }
+    delete image;
+    image = new QPixmap(imageBeforeMouseMoveEvent);
 
     paintObject(actualPaintType, x, y, event->x(), event->y());
 
