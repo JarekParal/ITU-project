@@ -19,13 +19,17 @@ MainWindow::MainWindow(QWidget *parent) :
 
     leftToolBar = new QToolBar;
     leftToolBar->setOrientation(Qt::Vertical);
-
-    upToolBar = new QToolBar;
-
-    mainLayout->addWidget(upToolBar, 0, 0, 1, 3);
-
     createToolBar();
     mainLayout->addWidget(leftToolBar, 1, 0);
+
+    setStylelBar = new QToolBar;
+    setStylelBar->setOrientation(Qt::Vertical);
+    createStyleBar();
+    mainLayout->addWidget(setStylelBar, 1, 2);
+
+    upToolBar = new QToolBar;
+    mainLayout->addWidget(upToolBar, 0, 0, 1, 3);
+
 
     setLayout(mainLayout);
 }
@@ -33,15 +37,6 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
-}
-
-void MainWindow::createStylesBar()
-{
-    styleBarButtonGroup = new QButtonGroup(this);
-    styleBarButtonGroup->setExclusive(false);
-
-    connect(styleBarButtonGroup, SIGNAL(buttonClicked(int)),
-           this, SLOT(styleBarButtonGroupClicked(int)));
 }
 
 void MainWindow::toolBarButtonGroupClicked(int id)
@@ -56,8 +51,39 @@ void MainWindow::toolBarButtonGroupClicked(int id)
 
 void MainWindow::styleBarButtonGroupClicked(int id)
 {
+    Qt::PenStyle type = static_cast<Qt::PenStyle>(id);
+    paintArea->actualPenStyle = type;
 
+    setButtonGroupChecked(styleBarButtonGroup, id);
 }
+
+
+void MainWindow::createStyleBar()
+{
+    styleBarButtonGroup = new QButtonGroup(this);
+    styleBarButtonGroup->setExclusive(false);
+
+    connect(styleBarButtonGroup, SIGNAL(buttonClicked(int)),
+           this, SLOT(styleBarButtonGroupClicked(int)));
+
+    QPushButton *style_SolidLine_Btn = new QPushButton(tr("&SolidLine"));
+    style_SolidLine_Btn->setCheckable(true);
+    styleBarButtonGroup->
+            addButton(style_SolidLine_Btn, static_cast<int>(Qt::SolidLine));
+    setStylelBar->addWidget(style_SolidLine_Btn);
+
+    QPushButton *style_DashLine_Btn = new QPushButton(tr("&DashLine"));
+    style_DashLine_Btn->setCheckable(true);
+    styleBarButtonGroup->
+            addButton(style_DashLine_Btn, static_cast<int>(Qt::DashLine));
+    setStylelBar->addWidget(style_DashLine_Btn);
+
+    QPushButton *style_DotLine_Btn = new QPushButton(tr("&Load"));
+    QPushButton *style_DashDotLine_Btn = new QPushButton(tr("&Load"));
+    QPushButton *style_DashDotDotLine_Btn = new QPushButton(tr("&Load"));
+    QPushButton *style_CustomDashLine_Btn = new QPushButton(tr("&Load"));
+}
+
 
 void MainWindow::createToolBar()
 {

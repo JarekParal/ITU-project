@@ -31,6 +31,7 @@ public:
     enum class PaintType { line, rect, circle, curve, ellipse, pen, brush, text, rubber, dropper, can};
     void paintObject(PaintType type, int x1, int y1, int x2, int y2);
     PaintType actualPaintType;
+    Qt::PenStyle actualPenStyle;
 
 signals:
 

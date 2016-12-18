@@ -52,7 +52,7 @@ private:
     QToolBar * setStylelBar;
 
     QButtonGroup *styleBarButtonGroup;
-    void createStylesBar();
+    void createStyleBar();
 
     QPushButton *style_SolidLine_Btn;
     QPushButton *style_DashLine_Btn;
